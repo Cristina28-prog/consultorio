@@ -19,8 +19,9 @@ import javax.swing.JOptionPane;
 
 public class crearPerfil extends javax.swing.JFrame {
     private ConexionMySQL bd;
+    private String tipoPerfil;
     /** Creates new form crearPerfil */
-    public crearPerfil(ConexionMySQL bd) {
+    public crearPerfil(ConexionMySQL bd,String tipoPerfil) {
         this.bd=bd;
         if (!bd.isConnected()){
             JOptionPane.showMessageDialog(this,"La conexion no se ha establecido...");

@@ -131,16 +131,19 @@ public class Login extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
       try {
-          String u =LogAccUser.getText();
-          String p= LogAccContra.getText();
+          String userLogin =LogAccUser.getText();
+          String password= LogAccContra.getText();
+          String tipoPerfil="";
            
-          String SQL = "SELECT Nombre,Contrasenia FROM usuario WHERE Nombre='"+u+"'AND Contrasenia='"+p+"'";
+          String SQL = "SELECT Nombre,Contrasenia,Tipoperfil FROM usuario WHERE Nombre='"+userLogin+"'AND Contrasenia='"+password+"'";
           Con.resultado = Con.sentencia.executeQuery(SQL);
-          if(Con.resultado.next()){
+          if(Con.resultado.next()){             
+              
               setVisible(false);
-              Menu menu = new Menu(Con);
-              menu.LbUsuario.setText("Bienvenido: "+Con.resultado.getString("Nombre"));
-              menu.setVisible(true);              
+              Menu menu = new Menu(Con,tipoPerfil);
+              tipoPerfil=Con.resultado.getString("Tipoperfil");
+              menu.LbUsuario.setText("Bienvenido: "+Con.resultado.getString("Nombre")+"   Tu perfil es:    "+tipoPerfil);
+              menu.setVisible(true);               
           
           }else{
           JOptionPane.showMessageDialog(null, "Usuario o Contraseña inválidos!");
