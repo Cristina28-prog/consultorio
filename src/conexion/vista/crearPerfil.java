@@ -8,7 +8,7 @@ package conexion.vista;
 import conexion.controlador.ConexionMySQL;
 import java.util.ArrayList;
 import java.util.Iterator;
-import conexion.modelo.Menu;
+
 import javax.swing.JOptionPane;
 
 /**
@@ -19,24 +19,14 @@ import javax.swing.JOptionPane;
 
 public class crearPerfil extends javax.swing.JFrame {
     private ConexionMySQL bd;
-    private String tipoPerfil;
     /** Creates new form crearPerfil */
-    public crearPerfil(ConexionMySQL bd,String tipoPerfil) {
+    public crearPerfil(ConexionMySQL bd) {
         this.bd=bd;
-        this.tipoPerfil=tipoPerfil;
-         
-         
         if (!bd.isConnected()){
             JOptionPane.showMessageDialog(this,"La conexion no se ha establecido...");
             return;
         }
         initComponents();
-        setTitle("Crear Perfil");
-        
-        
-         
-          
-        
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         setResizable(false);
@@ -83,11 +73,6 @@ public class crearPerfil extends javax.swing.JFrame {
         jLabel6.setText("NOMBRE:");
 
         jComboBox1_creaperfil_tipoperfil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SECRETARIA", "MEDICO", "PACIENTE", "ADMINISTRADOR", " " }));
-        jComboBox1_creaperfil_tipoperfil.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1_creaperfil_tipoperfilActionPerformed(evt);
-            }
-        });
 
         jLabel7.setText("TIPO DE PERFIL:");
 
@@ -181,9 +166,6 @@ public class crearPerfil extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-         
-          
-        
         String message;
         ArrayList<Object>params = new ArrayList<Object>();
         params.add(jComboBox1_creacionperfil.getSelectedItem().toString());
@@ -218,18 +200,6 @@ public class crearPerfil extends javax.swing.JFrame {
     private void jPasswordField1_creaperfil_contraseniaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1_creaperfil_contraseniaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jPasswordField1_creaperfil_contraseniaActionPerformed
-
-    private void jComboBox1_creaperfil_tipoperfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1_creaperfil_tipoperfilActionPerformed
-        // TODO add your handling code here:
-         
-                
-        
-          
-              
-        
-           
-        
-    }//GEN-LAST:event_jComboBox1_creaperfil_tipoperfilActionPerformed
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
