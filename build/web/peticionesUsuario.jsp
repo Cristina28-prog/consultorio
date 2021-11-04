@@ -21,7 +21,8 @@
         "guardar",
         "eliminar",
         "actualizar",
-        "listar"
+        "listar",
+        "consultaIndividual"
     });
 
     String proceso = "" + request.getParameter("proceso");
@@ -39,7 +40,7 @@
             String contrasenia = request.getParameter("contrasenia");
             String tipoPerfil = request.getParameter("tipoPerfil");
             int edad = Integer.parseInt(request.getParameter("edad"));
-            Usuario usu= new Usuario();
+            Usuario usu = new Usuario();
             usu.setNombreUsuario(nombreUsuario);
             usu.setTipoDocumento(tipoDocumento);
             usu.setDocumentoUsuario(documentoUsuario);
@@ -50,37 +51,68 @@
             //, uso de request.getParameter("nombre parametro")
             // creación de objeto y llamado a método guardar           
 
-            if (true) { 
+            if (usu.guardarUsuario()) {
                 respuesta += "\"" + proceso + "\": true";
             } else {
                 respuesta += "\"" + proceso + "\": false";
             }
 
         } else if (proceso.equals("eliminar")) {
-        //Solicitud de parámetros enviados desde el frontned
+            int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+            Usuario usu = new Usuario();
+            usu.setIdUsuario(idUsuario);
+
+            //Solicitud de parámetros enviados desde el frontned
             //, uso de request.getParameter("nombre parametro")
             //creación de objeto y llamado a método eliminar
-            if (true) {
+            if (usu.eliminarUsuario()) {
                 respuesta += "\"" + proceso + "\": true";
             } else {
                 respuesta += "\"" + proceso + "\": false";
             }
 
         } else if (proceso.equals("listar")) {
-        //Solicitud de parámetros enviados desde el frontned
+            //Solicitud de parámetros enviados desde el frontned
             //, uso de request.getParameter("nombre parametro")
-           //creación de objeto y llamado al metodo listar
+            //creación de objeto y llamado al metodo listar
             try {
-                Usuario usu= new Usuario();
+                Usuario usu = new Usuario();
                 List<Usuario> lista = usu.consultarUsuario();
                 respuesta += "\"" + proceso + "\": true,\"Usuarios\":" + new Gson().toJson(lista);
             } catch (Exception ex) {
-                respuesta += "\"" + proceso + "\": true,\"NombreLista\":[]";
+                respuesta += "\"" + proceso + "\": true,\"Usuarios\":[]";
                 Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } else if (proceso.equals("consultaIndividual")) {
+            try {
+                int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+                Usuario usu = new Usuario(idUsuario).consultarUsuarioInd();
+                respuesta += "\"" + proceso + "\": true,\"Usuario\":" + new Gson().toJson(usu);;
+
+            } catch (Exception ex) {
+                respuesta += "\"" + proceso + "\": true,\"Medicamento\": null";
+                Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+
+            }
+
         } else if (proceso.equals("actualizar")) {
+            int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+            String nombreUsuario = request.getParameter("nombreUsuario");
+            String tipoDocumento = request.getParameter("tipoDocumento");
+            String documentoUsuario = request.getParameter("documentoUsuario");
+            String contrasenia = request.getParameter("contrasenia");
+            String tipoPerfil = request.getParameter("tipoPerfil");
+            int edad = Integer.parseInt(request.getParameter("edad"));
+            Usuario usu = new Usuario();
+            usu.setIdUsuario(idUsuario);
+            usu.setNombreUsuario(nombreUsuario);
+            usu.setTipoDocumento(tipoDocumento);
+            usu.setDocumentoUsuario(documentoUsuario);
+            usu.setContrasenia(contrasenia);
+            usu.setTipoPerfil(tipoPerfil);
+            usu.setEdad(edad);
             //creación de objeto y llamado al metodo actualizar
-            if (true) {                     
+            if (usu.actualizarUsuario()) {
                 respuesta += "\"" + proceso + "\": true";
             } else {
                 respuesta += "\"" + proceso + "\": false";
@@ -96,7 +128,7 @@
         respuesta += "\"error\": \"INVALID\",";
         respuesta += "\"errorMsg\": \"Lo sentimos, los datos que ha enviado,"
                 + " son inválidos. Corrijalos y vuelva a intentar por favor.\"";
-    }    
+    }
     // Responder como objeto JSON codificación ISO 8859-1.
     respuesta += "}";
     response.setContentType("application/json;charset=iso-8859-1");

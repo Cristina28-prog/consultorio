@@ -28,6 +28,10 @@ public class Usuario {
     public Usuario() {
     }
 
+    public Usuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
     public Usuario(int idUsuario, String nombreUsuario, String tipoDocumento, String documentoUsuario, String contrasenia, String tipoPerfil, int edad) {
         this.idUsuario = idUsuario;
         this.nombreUsuario = nombreUsuario;
@@ -126,6 +130,31 @@ public class Usuario {
         return lista;
     }
 
+    public Usuario consultarUsuarioInd() {
+        List<Usuario> lista = new ArrayList<>();
+        ConexionBD conexion = new ConexionBD();
+        String sql = "SELECT * FROM c4b7grupo1.usuario WHERE idusuario= " + this.idUsuario + ";";;
+        ResultSet rs = conexion.consultarBD(sql);
+        try {
+            Usuario u;
+            if (rs.next()) {
+                this.nombreUsuario = rs.getString("nombreUsuario");
+                this.tipoDocumento = rs.getString("tipoDocumento");
+                this.documentoUsuario = rs.getString("documentoUsuario");
+                this.tipoPerfil = rs.getString("tipoPerfil");
+                this.contrasenia = rs.getString("contrasenia");
+                this.edad = rs.getInt("edad");
+            } else {
+                return null;
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error" + ex.getMessage());
+        } finally {
+            conexion.cerrarConexion();
+        }
+        return this;
+    }
+
     public boolean guardarUsuario() {
         ConexionBD conexion = new ConexionBD();
         String sql = "INSERT INTO c4b7grupo1.usuario\n"
@@ -148,18 +177,16 @@ public class Usuario {
         }
     }
 
-
-
     public boolean actualizarUsuario() {
         ConexionBD conexion = new ConexionBD();
         String sql = "UPDATE c4b7grupo1.usuario \n"
-                     + "SET nombreUsuario='"+this.nombreUsuario+"'," 
-                     + "tipoDocumento='"+this.tipoDocumento+"',"
-                     + "documentoUsuario='"+this.documentoUsuario+"',"
-                     +"contrasenia='"+this.contrasenia+"'," 
-                     +"tipoPerfil='"+this.tipoPerfil+"',"
-                     +"edad="+this.edad+"\n"
-                     +"WHERE idUsuario="+this.idUsuario+";";
+                + "SET nombreUsuario='" + this.nombreUsuario + "',"
+                + "tipoDocumento='" + this.tipoDocumento + "',"
+                + "documentoUsuario='" + this.documentoUsuario + "',"
+                + "contrasenia='" + this.contrasenia + "',"
+                + "tipoPerfil='" + this.tipoPerfil + "',"
+                + "edad=" + this.edad + "\n"
+                + "WHERE idUsuario=" + this.idUsuario + ";";
         if (conexion.setAutoCommitBD(false)) {
             if (conexion.actualizarBD(sql)) {
                 conexion.commitBD();
@@ -180,7 +207,7 @@ public class Usuario {
     public boolean eliminarUsuario() {
         ConexionBD conexion = new ConexionBD();
         String sql = "DELETE FROM c4b7grupo1.usuario\n"
-                     + "WHERE idUsuario=" + this.idUsuario + ";";
+                + "WHERE idUsuario=" + this.idUsuario + ";";
         if (conexion.setAutoCommitBD(false)) {
             if (conexion.actualizarBD(sql)) {
                 conexion.commitBD();

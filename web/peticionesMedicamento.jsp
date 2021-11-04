@@ -4,6 +4,7 @@
     Author     : nombre autor
 --%>
 
+<%@page import="logica.Medicamento"%>
 <%@page import="logica.Usuario"%>
 <%@page import="java.util.logging.Logger"%>
 <%@page import="java.util.logging.Level"%>
@@ -34,38 +35,27 @@
         // -----------------------------------INICIO PROCESOS----------------------------------- //
         // ------------------------------------------------------------------------------------- //
         if (proceso.equals("guardar")) {
-            String nombreUsuario = request.getParameter("nombreUsuario");
-            String tipoDocumento = request.getParameter("tipoDocumento");
-            String documentoUsuario = request.getParameter("documentoUsuario");
-            String contrasenia = request.getParameter("contrasenia");
-            String tipoPerfil = request.getParameter("tipoPerfil");
-            int edad = Integer.parseInt(request.getParameter("edad"));
-            Usuario usu = new Usuario();
-            usu.setNombreUsuario(nombreUsuario);
-            usu.setTipoDocumento(tipoDocumento);
-            usu.setDocumentoUsuario(documentoUsuario);
-            usu.setContrasenia(contrasenia);
-            usu.setTipoPerfil(tipoPerfil);
-            usu.setEdad(edad);
+            String nombreMedicamento = request.getParameter("nombreMedicamento");
+            Medicamento med = new Medicamento();
+            med.setNombreMedicamento(nombreMedicamento);
+
             //Solicitud de parámetros enviados desde el frontned
             //, uso de request.getParameter("nombre parametro")
             // creación de objeto y llamado a método guardar           
-
-            if (usu.guardarUsuario()) {
+            if (med.guardarMedicamento()) {
                 respuesta += "\"" + proceso + "\": true";
             } else {
                 respuesta += "\"" + proceso + "\": false";
             }
 
         } else if (proceso.equals("eliminar")) {
-            int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
-            Usuario usu = new Usuario();
-            usu.setIdUsuario(idUsuario);
-
+            int idMedicamento = Integer.parseInt(request.getParameter("idMedicamento"));
+            Medicamento med = new Medicamento();
+            med.setIdMedicamento(idMedicamento);
             //Solicitud de parámetros enviados desde el frontned
             //, uso de request.getParameter("nombre parametro")
             //creación de objeto y llamado a método eliminar
-            if (usu.eliminarUsuario()) {
+            if (med.eliminarMedicamento()) {
                 respuesta += "\"" + proceso + "\": true";
             } else {
                 respuesta += "\"" + proceso + "\": false";
@@ -76,43 +66,32 @@
             //, uso de request.getParameter("nombre parametro")
             //creación de objeto y llamado al metodo listar
             try {
-                Usuario usu = new Usuario();
-                List<Usuario> lista = usu.consultarUsuario();
-                respuesta += "\"" + proceso + "\": true,\"Usuarios\":" + new Gson().toJson(lista);
+                Medicamento med = new Medicamento();
+                List<Medicamento> lista = med.consultarMedicamento();
+                respuesta += "\"" + proceso + "\": true,\"Medicamentos\":" + new Gson().toJson(lista);
             } catch (Exception ex) {
-                respuesta += "\"" + proceso + "\": true,\"Usuarios\":[]";
-                Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+                respuesta += "\"" + proceso + "\": true,\"Medicamentos\":[]";
+                Logger.getLogger(Medicamento.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if (proceso.equals("consultaIndividual")) {
             try {
-                int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
-                Usuario usu = new Usuario(idUsuario).consultarUsuarioInd();
-                respuesta += "\"" + proceso + "\": true,\"Usuario\":" + new Gson().toJson(usu);;
+                int idMedicamento = Integer.parseInt(request.getParameter("idMedicamento"));
+                Medicamento med = new Medicamento(idMedicamento).consultarMedicamentoInd();
+                respuesta += "\"" + proceso + "\": true,\"Medicamento\":"  + new Gson().toJson(med);;
 
             } catch (Exception ex) {
                 respuesta += "\"" + proceso + "\": true,\"Medicamento\": null";
-                Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Medicamento.class.getName()).log(Level.SEVERE, null, ex);
 
             }
-
         } else if (proceso.equals("actualizar")) {
-            int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
-            String nombreUsuario = request.getParameter("nombreUsuario");
-            String tipoDocumento = request.getParameter("tipoDocumento");
-            String documentoUsuario = request.getParameter("documentoUsuario");
-            String contrasenia = request.getParameter("contrasenia");
-            String tipoPerfil = request.getParameter("tipoPerfil");
-            int edad = Integer.parseInt(request.getParameter("edad"));
-            Usuario usu = new Usuario();
-            usu.setIdUsuario(idUsuario);
-            usu.setNombreUsuario(nombreUsuario);
-            usu.setTipoDocumento(tipoDocumento);
-            usu.setDocumentoUsuario(documentoUsuario);
-            usu.setContrasenia(contrasenia);
-            usu.setTipoPerfil(tipoPerfil);
-            usu.setEdad(edad);
+            int idMedicamento = Integer.parseInt(request.getParameter("idMedicamento"));
+            String nombreMedicamento = request.getParameter("nombreMedicamento");
+            Medicamento med = new Medicamento();
+            med.setIdMedicamento(idMedicamento);
+            med.setNombreMedicamento(nombreMedicamento);
             //creación de objeto y llamado al metodo actualizar
-            if (usu.actualizarUsuario()) {
+            if (med.actualizarMedicamento()) {
                 respuesta += "\"" + proceso + "\": true";
             } else {
                 respuesta += "\"" + proceso + "\": false";

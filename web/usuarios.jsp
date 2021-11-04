@@ -15,7 +15,7 @@
     </head>
     <body>
         <jsp:include page="menu.jsp"/>
-        <h1> INDEX <h1/>
+        <h1> USUARIOS <h1/>
 
     </body>
 </html>
