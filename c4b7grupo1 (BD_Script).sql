@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-11-2021 a las 16:14:30
+-- Tiempo de generación: 06-11-2021 a las 02:14:42
 -- Versión del servidor: 10.4.21-MariaDB
 -- Versión de PHP: 8.0.10
 
@@ -28,10 +28,19 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `asignacion` (
-  `idUsuario` int(11) NOT NULL,
   `idCitas` int(11) NOT NULL,
   `idMedicamento` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `asignacion`
+--
+
+INSERT INTO `asignacion` (`idCitas`, `idMedicamento`) VALUES
+(3, 1),
+(6, 2),
+(6, 3),
+(5, 3);
 
 -- --------------------------------------------------------
 
@@ -51,8 +60,10 @@ CREATE TABLE `citas` (
 --
 
 INSERT INTO `citas` (`idCitas`, `idUsuario`, `fecha`, `idMedico`) VALUES
-(1, 1, '2021-08-10', 3),
-(2, 2, '2021-10-30', 4);
+(3, 5, '2021-10-31', 2),
+(4, 14, '2021-11-02', 7),
+(5, 14, '2021-05-05', 5),
+(6, 14, '2021-04-01', 7);
 
 -- --------------------------------------------------------
 
@@ -76,7 +87,8 @@ INSERT INTO `medicamento` (`idMedicamento`, `nombreMedicamento`) VALUES
 (6, 'Clonazepam'),
 (7, 'Teccardin'),
 (8, 'Natsulin'),
-(9, 'Aspirina');
+(9, 'Aspirina'),
+(10, 'Clozapina');
 
 -- --------------------------------------------------------
 
@@ -97,10 +109,10 @@ CREATE TABLE `medicos` (
 
 INSERT INTO `medicos` (`idMedico`, `nombreMedico`, `especialidad`, `contrasenia`) VALUES
 (1, 'Luis Pedro Alvarado', 'General', 'gato0'),
-(2, 'Maria Fernanda Perez', 'Neurologia', 'gato1'),
+(2, 'Maria Fernanda Perez', 'Pediatria', 'gato51'),
 (3, 'Carolina Gutierrez', 'General', 'Perro5'),
-(4, 'Juliana Medellin', 'Terapia', 'gatico5021'),
-(5, 'Luciana Ferrer', 'Terapia', 'raton1452');
+(5, 'Luciana Ferrer', 'Terapia', 'raton1452'),
+(7, 'Juan Pablo Rodriguez', 'Cardiologia', 'aufbiedenssen45');
 
 -- --------------------------------------------------------
 
@@ -123,17 +135,15 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`idUsuario`, `nombreUsuario`, `tipoDocumento`, `documentoUsuario`, `contrasenia`, `tipoPerfil`, `edad`) VALUES
-(1, 'Johanna Rincon', 'CC', '80544689', '0000', 'PACIENTE', 40),
-(2, 'Cesar Rodriguez', 'CC', '80563489', '0000', 'PACIENTE', 35),
-(3, 'Catalina arciniegas', 'TI', '1456897545', '0000', 'PACIENTE', 71),
-(4, 'Magdalena Pineda', 'CC', '53058695', '0000', 'SECRETARIA', 0),
-(5, 'Mario Martinez', 'CC', '80545322', '0000', 'GUARDIA', 22),
+(1, 'Johanna Rincon', 'CC', '80544689', '0000', 'ADMINISTRADOR', 40),
+(2, 'Cesar Rodriguez', 'CC', '80563489', '0000', 'SECRETARIA', 35),
+(3, 'Catalina arciniegas', 'CC', '35896547', '0000', 'SECRETARIA', 50),
+(4, 'Magdalena Pineda', 'CC', '53058695', '0000', 'PACIENTE', 45),
+(5, 'Mario Martinez', 'CC', '80545322', '0000', 'PACIENTE', 22),
 (6, 'Tatiana Santamaria', 'TI', '145687952', '0000', 'PACIENTE', 14),
-(7, 'null', '\"CC\"', '\"55669988\"', '\"0000\"', '\"PACIENTE\"', 55),
-(8, '\"Rosalba Rincon\"', '\"CC\"', '\"85475566\"', '\"0000\"', '\"PACIENTE\"', 65),
-(9, '\"Rosalba Rincon\"', '\"CC\"', '\"85475566\"', '\"0000\"', '\"PACIENTE\"', 65),
-(10, 'null', 'CC', '55669988', '0000', 'PACIENTE', 84),
-(11, 'Sonia Gamboa', 'CC', '53086547', '0000', 'PACIENTE', 25);
+(14, 'Serafina Luna', 'CC', '55669988', '0000', 'PACIENTE', 55),
+(18, 'Tom York', 'CE', '456987423', '0000', 'PACIENTE', 54),
+(19, 'Sebastian Pineda', 'TI', '146589726', '0000', 'PACIENTE', 10);
 
 --
 -- Índices para tablas volcadas
@@ -143,7 +153,6 @@ INSERT INTO `usuario` (`idUsuario`, `nombreUsuario`, `tipoDocumento`, `documento
 -- Indices de la tabla `asignacion`
 --
 ALTER TABLE `asignacion`
-  ADD KEY `asignacion_FK` (`idUsuario`),
   ADD KEY `asignacion_FK_1` (`idCitas`),
   ADD KEY `asignacion_FK_2` (`idMedicamento`);
 
@@ -181,25 +190,25 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `citas`
 --
 ALTER TABLE `citas`
-  MODIFY `idCitas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idCitas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `medicamento`
 --
 ALTER TABLE `medicamento`
-  MODIFY `idMedicamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `idMedicamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `medicos`
 --
 ALTER TABLE `medicos`
-  MODIFY `idMedico` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idMedico` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Restricciones para tablas volcadas
@@ -209,7 +218,6 @@ ALTER TABLE `usuario`
 -- Filtros para la tabla `asignacion`
 --
 ALTER TABLE `asignacion`
-  ADD CONSTRAINT `asignacion_FK` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`),
   ADD CONSTRAINT `asignacion_FK_1` FOREIGN KEY (`idCitas`) REFERENCES `citas` (`idCitas`),
   ADD CONSTRAINT `asignacion_FK_2` FOREIGN KEY (`idMedicamento`) REFERENCES `medicamento` (`idMedicamento`);
 
