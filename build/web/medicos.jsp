@@ -70,7 +70,7 @@
                     <div class="row">
                         <div class="col-6"> 
                             <label>idMedico</label>
-                            <input type="text" class="form-control" placeholder="Codigo" disabled="" value="{{mc.idMedico}}">
+                            <input type="text" class="form-control" placeholder="id" disabled="" value="{{mc.idMedico}}">
                         </div>
                         <div class="col-6"> 
                             <label>Nombre de Medico</label>
@@ -80,11 +80,11 @@
                     <div class="row">
                         <div class="col-6"> 
                             <label>especialidad</label>
-                            <input type="text" class="form-control" placeholder="Codigo" disabled="" value="{{mc.especialidad}}">
+                            <input type="text" class="form-control" placeholder="Especialidad" disabled="" value="{{mc.especialidad}}">
                         </div>
                         <div class="col-6"> 
                             <label>Contraseña</label>
-                            <input type="text" class="form-control" placeholder="Codigo" disabled="" value="{{mc.contrasenia}}">
+                            <input type="text" class="form-control" placeholder="Contraseña" disabled="" value="{{mc.contrasenia}}">
                         </div>
                     </div>
                 </div>
@@ -120,6 +120,33 @@
             app.controller('medicosController', ['$http', controladorMedicos]);
             function controladorMedicos($http) {
                 var mc = this;
+                validar = function (tipoDeValidacion) {
+                    var idMedico = mc.idMedico;
+                    var nombreMedico = mc.nombreMedico;
+                    var especialidad = mc.especialidad;
+                    var contrasenia = mc.contrasenia;
+                    if (tipoDeValidacion === 'todosLosCampos') {
+                        if (idMedico && nombreMedico && especialidad && contrasenia) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                    if (tipoDeValidacion === 'datosSinId') {
+                        if (nombreMedico && especialidad && contrasenia) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                    if (tipoDeValidacion === 'soloId') {
+                        if (idMedico) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                };
                 mc.listar = function () {
                     var parametros = {
                         proceso: 'listar'
@@ -133,72 +160,89 @@
                     });
                 };
                 mc.guardar = function () {
-                    var parametros = {
-                        proceso: 'guardar',
-                        nombreMedico: mc.nombreMedico,
-                        especialidad: mc.especialidad,
-                        contrasenia: mc.contrasenia
-                    };
-                    $http({
-                        method: 'POST',
-                        url: 'peticionesMedicos.jsp',
-                        params: parametros
-                    }).then(function (res) {
-                        if (res.data.ok === true) {//verificar si el proceso existe
-                            if (res.data.guardar === true) {//verifica el resultado de la transaccion
-                                alert('Guardó');
+                    if (validar('datosSinId')) {
+                        var parametros = {
+                            proceso: 'guardar',
+                            nombreMedico: mc.nombreMedico,
+                            especialidad: mc.especialidad,
+                            contrasenia: mc.contrasenia
+                        };
+                        $http({
+                            method: 'POST',
+                            url: 'peticionesMedicos.jsp',
+                            params: parametros
+                        }).then(function (res) {
+                            if (res.data.ok === true) {//verificar si el proceso existe
+                                if (res.data.guardar === true) {//verifica el resultado de la transaccion
+                                    alert('Guardó');
+                                } else {
+                                    alert('No guardó');
+                                }
                             } else {
-                                alert('No guardó');
+                                alert(res.data.errorMsg);
                             }
-                        } else {
-                            alert(res.data.errorMsg);
-                        }
-                    });
+                        });
+                    } else {
+                        alert('Los campos, Nombre, especialidad, y contraseña son ');
+
+                    }
                 };
                 mc.actualizar = function () {
-                    var parametros = {
-                        proceso: 'actualizar',
-                        idMedico: mc.idMedico,
-                        nombreMedico: mc.nombreMedico,
-                        especialidad: mc.especialidad,
-                        contrasenia: mc.contrasenia
-                    };
-                    $http({
-                        method: 'POST',
-                        url: 'peticionesMedicos.jsp',
-                        params: parametros
-                    }).then(function (res) {
-                        if (res.data.ok === true) {//verificar si el proceso existe
-                            if (res.data.actualizar === true) {//verifica el resultado de la transaccion
-                                alert('Actualizó');
+                    if (validar('todosLosCampos')) {
+                        var parametros = {
+                            proceso: 'actualizar',
+                            idMedico: mc.idMedico,
+                            nombreMedico: mc.nombreMedico,
+                            especialidad: mc.especialidad,
+                            contrasenia: mc.contrasenia
+                        };
+                        $http({
+                            method: 'POST',
+                            url: 'peticionesMedicos.jsp',
+                            params: parametros
+                        }).then(function (res) {
+                            if (res.data.ok === true) {//verificar si el proceso existe
+                                if (res.data.actualizar === true) {//verifica el resultado de la transaccion
+                                    alert('Actualizó');
+                                } else {
+                                    alert('No Actualizó');
+                                }
                             } else {
-                                alert('No Actualizó');
+                                alert(res.data.errorMsg);
                             }
-                        } else {
-                            alert(res.data.errorMsg);
-                        }
-                    });
+                        });
+                    } else {
+                        alert('Todos los campos son obligatorios');
+
+                    }
+
                 };
                 mc.eliminar = function () {
-                    var parametros = {
-                        proceso: 'eliminar',
-                        idMedico: mc.idMedico
-                    };
-                    $http({
-                        method: 'POST',
-                        url: 'peticionesMedicos.jsp',
-                        params: parametros
-                    }).then(function (res) {
-                        if (res.data.ok === true) {
-                            if (res.data.eliminar === true) {
-                                alert('Eliminado');
+                    if (validar('soloId')) {
+                        var parametros = {
+                            proceso: 'eliminar',
+                            idMedico: mc.idMedico
+                        };
+                        $http({
+                            method: 'POST',
+                            url: 'peticionesMedicos.jsp',
+                            params: parametros
+                        }).then(function (res) {
+                            if (res.data.ok === true) {
+                                if (res.data.eliminar === true) {
+                                    alert('Eliminado');
+                                } else {
+                                    alert('No Eliminado');
+                                }
                             } else {
-                                alert('No Eliminado');
+                                alert(res.data.errorMsg);
                             }
-                        } else {
-                            alert(res.data.errorMsg);
-                        }
-                    });
+                        });
+                    } else {
+                        alert('El campo ID es obligatorio');
+
+                    }
+
                 };
                 mc.editar = function (id) {
                     var parametros = {

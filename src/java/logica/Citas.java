@@ -21,6 +21,8 @@ public class Citas {
     private int idUsuario;
     private String fecha;
     private int idMedico;
+    private Usuario usuario;
+    private Medicos medico;
 
     public Citas() {
     }
@@ -68,6 +70,24 @@ public class Citas {
         this.idMedico = idMedico;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Medicos getMedico() {
+        return medico;
+    }
+
+    public void setMedico(Medicos medico) {
+        this.medico = medico;
+    }
+    
+    
+
     @Override
     public String toString() {
         return "Citas{" + "idCitas=" + idCitas + ", idUsuario=" + idUsuario + ", fecha=" + fecha + ", idMedico=" + idMedico + '}';
@@ -87,6 +107,10 @@ public class Citas {
                 c.setIdUsuario(rs.getInt("idUsuario"));
                 c.setFecha(rs.getString("fecha"));
                 c.setIdMedico(rs.getInt("idMedico"));
+                Usuario u = new Usuario(c.getIdUsuario()).consultarUsuarioInd();      //Instancio la clase usuario y hago una consulta Con el metodo de consulta individual
+                c.setUsuario(u);                                //Se hace el set del objeto usuario a la tabla c
+                Medicos m = new Medicos(c.getIdMedico()).consultarMedicoInd();
+                c.setMedico(m);
                 lista.add(c);
             }
         } catch (SQLException ex) {

@@ -16,8 +16,12 @@ import persistencia.ConexionBD;
  * @author Juan Rojas
  */
 public class Asignacion {
+
     private int idCitas;
     private int idMedicamento;
+    private Citas cita;
+    private Usuario usuario;
+    private Medicamento medicamento;
 
     public Asignacion() {
     }
@@ -25,14 +29,11 @@ public class Asignacion {
     public Asignacion(int idCitas) {
         this.idCitas = idCitas;
     }
-    
-    
 
     public Asignacion(int idCitas, int idMedicamento) {
         this.idCitas = idCitas;
         this.idMedicamento = idMedicamento;
     }
-
 
     public int getIdCitas() {
         return idCitas;
@@ -48,6 +49,30 @@ public class Asignacion {
 
     public void setIdMedicamento(int idMedicamento) {
         this.idMedicamento = idMedicamento;
+    }
+
+    public Citas getCita() {
+        return cita;
+    }
+
+    public void setCita(Citas cita) {
+        this.cita = cita;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Medicamento getMedicamento() {
+        return medicamento;
+    }
+
+    public void setMedicamento(Medicamento medicamento) {
+        this.medicamento = medicamento;
     }
 
     @Override
@@ -67,6 +92,12 @@ public class Asignacion {
                 a = new Asignacion();
                 a.setIdCitas(rs.getInt("idCitas"));
                 a.setIdMedicamento(rs.getInt("idMedicamento"));
+                Medicamento m = new Medicamento(a.getIdMedicamento()).consultarMedicamentoInd();
+                a.setMedicamento(m);
+                Citas c = new Citas(a.getIdCitas()).consultarCitasInd();
+                a.setCita(c);
+                Usuario u = new Usuario(c.getIdUsuario()).consultarUsuarioInd();
+                a.setUsuario(u);
                 lista.add(a);
             }
         } catch (SQLException ex) {
@@ -101,7 +132,7 @@ public class Asignacion {
         ConexionBD conexion = new ConexionBD();
         String sql = "INSERT INTO c4b7grupo1.asignacion\n"
                 + "(idCitas, idMedicamento)\n"
-                + "VALUES(" + this.idCitas +  " , " + this.idMedicamento +  ");";
+                + "VALUES(" + this.idCitas + " , " + this.idMedicamento + ");";
         if (conexion.setAutoCommitBD(false)) {
             if (conexion.insertarBD(sql)) {
                 conexion.commitBD();
@@ -161,6 +192,5 @@ public class Asignacion {
             return false;
         }
     }
-    
-    
+
 }

@@ -24,7 +24,7 @@
                     <div class="row">
                         <div class="col-6"> 
                             <label>idUsuario</label>
-                            <input type="text" class="form-control" placeholder="Codigo" ng-model="uc.idUsuario">
+                            <input type="text" class="form-control" placeholder="Id" ng-model="uc.idUsuario">
                         </div>
                         <div class="col-6"> 
                             <label>Nombre de Usuario</label>
@@ -42,13 +42,13 @@
                         </div>
                         <div class="col-6"> 
                             <label>Numero Documento</label>
-                            <input type="text" class="form-control" placeholder="Codigo" ng-model="uc.documentoUsuario">
+                            <input type="text" class="form-control" placeholder="Documento" ng-model="uc.documentoUsuario">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-6"> 
                             <label>contraseña</label>
-                            <input type="text" class="form-control" placeholder="Codigo" ng-model="uc.contrasenia">
+                            <input type="text" class="form-control" placeholder="Contraseña" ng-model="uc.contrasenia">
                         </div>
                         <div class="col-6"> 
                             <label>Tipo de Usuario</label>
@@ -60,7 +60,7 @@
                         </div>
                         <div class="col-6"> 
                             <label>Edad</label>
-                            <input type="text" class="form-control" placeholder="Codigo" ng-model="uc.edad">
+                            <input type="text" class="form-control" placeholder="Edad" ng-model="uc.edad">
                         </div>
                     </div>
                     <br>
@@ -85,7 +85,7 @@
                     <div class="row">
                         <div class="col-6"> 
                             <label>idUsuario</label>
-                            <input type="text" class="form-control" placeholder="Codigo" disabled="" value="{{uc.idUsuario}}">
+                            <input type="text" class="form-control" placeholder="Id" disabled="" value="{{uc.idUsuario}}">
                         </div>
                         <div class="col-6"> 
                             <label>Nombre de Usuario</label>
@@ -95,25 +95,25 @@
                     <div class="row">
                         <div class="col-6"> 
                             <label>Tipo Documento</label>
-                            <input type="text" class="form-control" placeholder="Codigo" disabled="" value="{{uc.tipoDocumento}}">
+                            <input type="text" class="form-control" placeholder="Tipo Documento" disabled="" value="{{uc.tipoDocumento}}">
                         </div>
                         <div class="col-6"> 
                             <label>Numero Documento</label>
-                            <input type="text" class="form-control" placeholder="Codigo" disabled="" value="{{uc.documentoUsuario}}">
+                            <input type="text" class="form-control" placeholder="Documento" disabled="" value="{{uc.documentoUsuario}}">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-6"> 
                             <label>contraseña</label>
-                            <input type="text" class="form-control" placeholder="Codigo" disabled="" value="{{uc.contrasenia}}">
+                            <input type="text" class="form-control" placeholder="Contraseña" disabled="" value="{{uc.contrasenia}}">
                         </div>
                         <div class="col-6"> 
                             <label>Tipo de Usuario</label>
-                            <input type="text" class="form-control" placeholder="Codigo" disabled="" value="{{uc.tipoPerfil}}">
+                            <input type="text" class="form-control" placeholder="Tipo de Usuario" disabled="" value="{{uc.tipoPerfil}}">
                         </div>
                         <div class="col-6"> 
                             <label>Edad</label>
-                            <input type="text" class="form-control" placeholder="Codigo" disabled="" value="{{uc.edad}}">
+                            <input type="text" class="form-control" placeholder="Edad" disabled="" value="{{uc.edad}}">
                         </div>
                     </div>
                 </div>
@@ -155,6 +155,37 @@
             app.controller('usuarioController', ['$http', controladorUsuario]);
             function controladorUsuario($http) {
                 var uc = this;
+                validar = function (tipoDeValidacion) {
+                    var idUsuario = uc.idUsuario ? true : false;
+                    var nombreUsuario = uc.nombreUsuario ? true : false;
+                    var tipoDocumento = uc.tipoDocumento ? true : false;
+                    var documentoUsuario = uc.documentoUsuario ? true : false;
+                    var contrasenia = uc.contrasenia ? true : false;
+                    var tipoPerfil = uc.tipoPerfil ? true : false;
+                    var edad = uc.edad ? true : false;
+                    if (tipoDeValidacion === 'todosLosCampos') {
+                        if (idUsuario && nombreUsuario && tipoDocumento && documentoUsuario && contrasenia && tipoPerfil && edad) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+
+                    } 
+                    if (tipoDeValidacion === 'datosSinId') {
+                        if (nombreUsuario && tipoDocumento && documentoUsuario && contrasenia && tipoPerfil && edad) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }  
+                    if (tipoDeValidacion === 'soloId') {
+                        if (idUsuario) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                };
                 uc.listar = function () {
                     var parametros = {
                         proceso: 'listar'
@@ -168,78 +199,95 @@
                     });
                 };
                 uc.guardar = function () {
-                    var parametros = {
-                        proceso: 'guardar',
-                        nombreUsuario: uc.nombreUsuario,
-                        tipoDocumento: uc.tipoDocumento,
-                        documentoUsuario: uc.documentoUsuario,
-                        contrasenia: uc.contrasenia,
-                        tipoPerfil: uc.tipoPerfil,
-                        edad: uc.edad
-                    };
-                    $http({
-                        method: 'POST',
-                        url: 'peticionesUsuario.jsp',
-                        params: parametros
-                    }).then(function (res) {
-                        if (res.data.ok === true) {//verificar si el proceso existe
-                            if (res.data.guardar === true) {//verifica el resultado de la transaccion
-                                alert('Guardó');
+                    if (validar('datosSinId')) {
+                        var parametros = {
+                            proceso: 'guardar',
+                            nombreUsuario: uc.nombreUsuario,
+                            tipoDocumento: uc.tipoDocumento,
+                            documentoUsuario: uc.documentoUsuario,
+                            contrasenia: uc.contrasenia,
+                            tipoPerfil: uc.tipoPerfil,
+                            edad: uc.edad
+                        };
+                        $http({
+                            method: 'POST',
+                            url: 'peticionesUsuario.jsp',
+                            params: parametros
+                        }).then(function (res) {
+                            if (res.data.ok === true) {//verificar si el proceso existe
+                                if (res.data.guardar === true) {//verifica el resultado de la transaccion
+                                    alert('Guardó');
+                                } else {
+                                    alert('No guardó');
+                                }
                             } else {
-                                alert('No guardó');
+                                alert(res.data.errorMsg);
                             }
-                        } else {
-                            alert(res.data.errorMsg);
-                        }
-                    });
+                        });
+                    } else {
+                        alert('Todos los campos son obligaatorios');
+
+                    }
+
                 };
                 uc.actualizar = function () {
-                    var parametros = {
-                        proceso: 'actualizar',
-                        idUsuario: uc.idUsuario,
-                        nombreUsuario: uc.nombreUsuario,
-                        tipoDocumento: uc.tipoDocumento,
-                        documentoUsuario: uc.documentoUsuario,
-                        contrasenia: uc.contrasenia,
-                        tipoPerfil: uc.tipoPerfil,
-                        edad: uc.edad
-                    };
-                    $http({
-                        method: 'POST',
-                        url: 'peticionesUsuario.jsp',
-                        params: parametros
-                    }).then(function (res) {
-                        if (res.data.ok === true) {//verificar si el proceso existe
-                            if (res.data.actualizar === true) {//verifica el resultado de la transaccion
-                                alert('Actualizó');
+                    if (validar('todosLosCampos')) {
+                        var parametros = {
+                            proceso: 'actualizar',
+                            idUsuario: uc.idUsuario,
+                            nombreUsuario: uc.nombreUsuario,
+                            tipoDocumento: uc.tipoDocumento,
+                            documentoUsuario: uc.documentoUsuario,
+                            contrasenia: uc.contrasenia,
+                            tipoPerfil: uc.tipoPerfil,
+                            edad: uc.edad
+                        };
+                        $http({
+                            method: 'POST',
+                            url: 'peticionesUsuario.jsp',
+                            params: parametros
+                        }).then(function (res) {
+                            if (res.data.ok === true) {//verificar si el proceso existe
+                                if (res.data.actualizar === true) {//verifica el resultado de la transaccion
+                                    alert('Actualizó');
+                                } else {
+                                    alert('No Actualizó');
+                                }
                             } else {
-                                alert('No Actualizó');
+                                alert(res.data.errorMsg);
                             }
-                        } else {
-                            alert(res.data.errorMsg);
-                        }
-                    });
+                        });
+                    } else {
+                        alert('Todos los campos son obligatorios');
+
+                    }
+
                 };
                 uc.eliminar = function () {
-                    var parametros = {
-                        proceso: 'eliminar',
-                        idUsuario: uc.idUsuario
-                    };
-                    $http({
-                        method: 'POST',
-                        url: 'peticionesUsuario.jsp',
-                        params: parametros
-                    }).then(function (res) {
-                        if (res.data.ok === true) {
-                            if (res.data.eliminar === true) {
-                                alert('Eliminado');
+                    if (validar('soloId')) {
+                        var parametros = {
+                            proceso: 'eliminar',
+                            idUsuario: uc.idUsuario
+                        };
+                        $http({
+                            method: 'POST',
+                            url: 'peticionesUsuario.jsp',
+                            params: parametros
+                        }).then(function (res) {
+                            if (res.data.ok === true) {
+                                if (res.data.eliminar === true) {
+                                    alert('Eliminado');
+                                } else {
+                                    alert('No Eliminado');
+                                }
                             } else {
-                                alert('No Eliminado');
+                                alert(res.data.errorMsg);
                             }
-                        } else {
-                            alert(res.data.errorMsg);
-                        }
-                    });
+                        });
+                    } else {
+                        alert('El campo Id es obligatorio');
+                    }
+
                 };
                 uc.editar = function (id) {
                     var parametros = {

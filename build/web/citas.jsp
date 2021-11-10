@@ -24,21 +24,21 @@
                     <div class="row">
                         <div class="col-6"> 
                             <label>idCitas</label>
-                            <input type="text" class="form-control" placeholder="id" ng-model="cc.idCitas">
+                            <input type="text" class="form-control" placeholder="id Cita" ng-model="cc.idCitas">
                         </div>
                         <div class="col-6"> 
                             <label>id Usuario</label>
-                            <input type="text" class="form-control" placeholder="Nombre" ng-model="cc.idUsuario">
+                            <input type="text" class="form-control" placeholder="Usuario (id)" ng-model="cc.idUsuario">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-6"> 
                             <label>Fecha</label>
-                            <input type="text" class="form-control" placeholder="Nombre" ng-model="cc.fecha">
+                            <input type="text" class="form-control" placeholder="Fecha yyyy-mm-dd" ng-model="cc.fecha">
                         </div>
                         <div class="col-6"> 
                             <label>idMedico</label>
-                            <input type="text" class="form-control" placeholder="Contraseña" ng-model="cc.idMedico">
+                            <input type="text" class="form-control" placeholder="Medico (id)" ng-model="cc.idMedico">
                         </div>
                     </div>
                     <br>
@@ -63,21 +63,21 @@
                     <div class="row">
                         <div class="col-6"> 
                             <label>idCitas</label>
-                            <input type="text" class="form-control" placeholder="Codigo" disabled="" value="{{cc.idCitas}}">
+                            <input type="text" class="form-control" placeholder="id Cita" disabled="" value="{{cc.idCitas}}">
                         </div>
                         <div class="col-6"> 
                             <label>idUsuario</label>
-                            <input type="text" class="form-control" placeholder="Nombre" disabled="" value="{{cc.idUsuario}}">
+                            <input type="text" class="form-control" placeholder="Usuario (id)" disabled="" value="{{cc.idUsuario}}">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-6"> 
                             <label>Fecha</label>
-                            <input type="text" class="form-control" placeholder="Codigo" disabled="" value="{{cc.fecha}}">
+                            <input type="text" class="form-control" placeholder="Fecha yyyy-mm-dd" disabled="" value="{{cc.fecha}}">
                         </div>
                         <div class="col-6"> 
                             <label>idMedico</label>
-                            <input type="text" class="form-control" placeholder="Codigo" disabled="" value="{{cc.idMedico}}">
+                            <input type="text" class="form-control" placeholder="Medico (id)" disabled="" value="{{cc.idMedico}}">
                         </div>
                     </div>
                 </div>
@@ -89,8 +89,10 @@
                         <tr>
                             <th scope="col">id Cita</th>
                             <th scope="col">idUsuario</th>
+                            <th scope="col">Nombre de Usuario</th>
                             <th scope="col">Fecha</th>
                             <th scope="col">idMedico</th>>
+                            <th scope="col">Nombre de Medico</th>
                             <th scope="col">-</th>                           
                         </tr>
                     </thead>
@@ -98,8 +100,10 @@
                         <tr ng-repeat="c in cc.Citas">
                             <td>{{c.idCitas}}</td>
                             <td>{{c.idUsuario}}</td>
+                            <td>{{c.usuario.nombreUsuario}}</td>
                             <td>{{c.fecha}}</td>
                             <td>{{c.idMedico}}</td>
+                            <td>{{c.medico.nombreMedico}}</td>
                             <td>
                                 <button type="button" class="btn btn-info" ng-click="cc.editar(c.idCitas)">Editar</button>
                             </td>
@@ -113,6 +117,33 @@
             app.controller('citasController', ['$http', controladorCitas]);
             function controladorCitas($http) {
                 var cc = this;
+                validar = function (tipoDeValidacion) {
+                    var idCitas = cc.idCitas;
+                    var idUsuario = cc.idUsuario;
+                    var fecha = cc.fecha;
+                    var idMedico = cc.idMedico;
+                    if (tipoDeValidacion === 'todosLosCampos') {
+                        if (idCitas && idUsuario && fecha && idMedico) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                    if (tipoDeValidacion === 'datosSinId') {
+                        if (idUsuario && fecha && idMedico) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                    if (tipoDeValidacion === 'soloId') {
+                        if (idCitas) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                };
                 cc.listar = function () {
                     var parametros = {
                         proceso: 'listar'
@@ -126,72 +157,88 @@
                     });
                 };
                 cc.guardar = function () {
-                    var parametros = {
-                        proceso: 'guardar',
-                        idUsuario: cc.idUsuario,
-                        fecha: cc.fecha,
-                        idMedico: cc.idMedico
-                    };
-                    $http({
-                        method: 'POST',
-                        url: 'peticionesCitas.jsp',
-                        params: parametros
-                    }).then(function (res) {
-                        if (res.data.ok === true) {//verificar si el proceso existe
-                            if (res.data.guardar === true) {//verifica el resultado de la transaccion
-                                alert('Guardó');
+                    if (validar('datosSinId')) {
+                        var parametros = {
+                            proceso: 'guardar',
+                            idUsuario: cc.idUsuario,
+                            fecha: cc.fecha,
+                            idMedico: cc.idMedico
+                        };
+                        $http({
+                            method: 'POST',
+                            url: 'peticionesCitas.jsp',
+                            params: parametros
+                        }).then(function (res) {
+                            if (res.data.ok === true) {//verificar si el proceso existe
+                                if (res.data.guardar === true) {//verifica el resultado de la transaccion
+                                    alert('Guardó');
+                                } else {
+                                    alert('No guardó');
+                                }
                             } else {
-                                alert('No guardó');
+                                alert(res.data.errorMsg);
                             }
-                        } else {
-                            alert(res.data.errorMsg);
-                        }
-                    });
+                        });
+                    } else {
+                        alert('Los campos isUsuario fecha id Medico son obligatorios');
+
+                    }
+
                 };
                 cc.actualizar = function () {
-                    var parametros = {
-                        proceso: 'actualizar',
-                        idCitas: cc.idCitas,
-                        idUsuario: cc.idUsuario,
-                        fecha: cc.fecha,
-                        idMedico: cc.idMedico
-                    };
-                    $http({
-                        method: 'POST',
-                        url: 'peticionesCitas.jsp',
-                        params: parametros
-                    }).then(function (res) {
-                        if (res.data.ok === true) {//verificar si el proceso existe
-                            if (res.data.actualizar === true) {//verifica el resultado de la transaccion
-                                alert('Actualizó');
+                    if (validar('todosLosCampos')) {
+                        var parametros = {
+                            proceso: 'actualizar',
+                            idCitas: cc.idCitas,
+                            idUsuario: cc.idUsuario,
+                            fecha: cc.fecha,
+                            idMedico: cc.idMedico
+                        };
+                        $http({
+                            method: 'POST',
+                            url: 'peticionesCitas.jsp',
+                            params: parametros
+                        }).then(function (res) {
+                            if (res.data.ok === true) {//verificar si el proceso existe
+                                if (res.data.actualizar === true) {//verifica el resultado de la transaccion
+                                    alert('Actualizó');
+                                } else {
+                                    alert('No Actualizó');
+                                }
                             } else {
-                                alert('No Actualizó');
+                                alert(res.data.errorMsg);
                             }
-                        } else {
-                            alert(res.data.errorMsg);
-                        }
-                    });
+                        });
+                    } else {
+                        alert('Todos los campos son obligatorios');
+                    }
+
                 };
                 cc.eliminar = function () {
-                    var parametros = {
-                        proceso: 'eliminar',
-                        idCitas: cc.idCitas
-                    };
-                    $http({
-                        method: 'POST',
-                        url: 'peticionesCitas.jsp',
-                        params: parametros
-                    }).then(function (res) {
-                        if (res.data.ok === true) {
-                            if (res.data.eliminar === true) {
-                                alert('Eliminado');
+                    if (validar('soloId')) {
+                        var parametros = {
+                            proceso: 'eliminar',
+                            idCitas: cc.idCitas
+                        };
+                        $http({
+                            method: 'POST',
+                            url: 'peticionesCitas.jsp',
+                            params: parametros
+                        }).then(function (res) {
+                            if (res.data.ok === true) {
+                                if (res.data.eliminar === true) {
+                                    alert('Eliminado');
+                                } else {
+                                    alert('No Eliminado');
+                                }
                             } else {
-                                alert('No Eliminado');
+                                alert(res.data.errorMsg);
                             }
-                        } else {
-                            alert(res.data.errorMsg);
-                        }
-                    });
+                        });
+                    } else {
+                        alert('El campo id es obligatorio');
+                    }
+
                 };
                 cc.editar = function (id) {
                     var parametros = {

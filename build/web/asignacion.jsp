@@ -28,7 +28,7 @@
                         </div>
                         <div class="col-6"> 
                             <label>id Medicamento</label>
-                            <input type="text" class="form-control" placeholder="Nombre" ng-model="ac.idMedicamento">
+                            <input type="text" class="form-control" placeholder="Medicamento (id)" ng-model="ac.idMedicamento">
                         </div>
                     </div>
                     <br>
@@ -53,11 +53,11 @@
                     <div class="row">
                         <div class="col-6"> 
                             <label>idCitas</label>
-                            <input type="text" class="form-control" placeholder="Codigo" disabled="" value="{{ac.idCitas}}">
+                            <input type="text" class="form-control" placeholder="id" disabled="" value="{{ac.idCitas}}">
                         </div>
                         <div class="col-6"> 
                             <label>idMedicamento</label>
-                            <input type="text" class="form-control" placeholder="Nombre" disabled="" value="{{ac.idMedicamento}}">
+                            <input type="text" class="form-control" placeholder="Medicamento (id)" disabled="" value="{{ac.idMedicamento}}">
                         </div>
                     </div>
                 </div>
@@ -77,9 +77,9 @@
                     <tbody>
                         <tr ng-repeat="a in ac.Asignaciones">
                             <td>{{a.idCitas}}</td>
-                            <td>-</td>
+                            <td>{{a.usuario.nombreUsuario}}</td>
                             <td>{{a.idMedicamento}}</td>
-                            <td>-</td>
+                            <td>{{a.medicamento.nombreMedicamento}}</td>
                             <td>
                                 <button type="button" class="btn btn-info" ng-click="ac.editar(a.idCitas)">Editar</button>
                             </td>
@@ -93,6 +93,25 @@
             app.controller('asignacionController', ['$http', controladorAsignacion]);
             function controladorAsignacion($http) {
                 var ac = this;
+                validar = function (tipoDeValidacion) {
+                    var idCitas = ac.idCitas;
+                    var idMedicamento = ac.idMedicamento;
+                    if (tipoDeValidacion === 'todosLosCampos') {
+                        if (idCitas && idMedicamento) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                    if (tipoDeValidacion === 'soloId') {
+                        if (idCitas) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+
+                };
                 ac.listar = function () {
                     var parametros = {
                         proceso: 'listar'
@@ -106,69 +125,82 @@
                     });
                 };
                 ac.guardar = function () {
-                    var parametros = {
-                        proceso: 'guardar',
-                        idCitas: ac.idCitas,
-                        idMedicamento: ac.idMedicamento
-                    };
-                    $http({
-                        method: 'POST',
-                        url: 'peticionesAsignacion.jsp',
-                        params: parametros
-                    }).then(function (res) {
-                        if (res.data.ok === true) {//verificar si el proceso existe
-                            if (res.data.guardar === true) {//verifica el resultado de la transaccion
-                                alert('Guardó');
+                    if (validar('todosLosCampos')) {
+                        var parametros = {
+                            proceso: 'guardar',
+                            idCitas: ac.idCitas,
+                            idMedicamento: ac.idMedicamento
+                        };
+                        $http({
+                            method: 'POST',
+                            url: 'peticionesAsignacion.jsp',
+                            params: parametros
+                        }).then(function (res) {
+                            if (res.data.ok === true) {//verificar si el proceso existe
+                                if (res.data.guardar === true) {//verifica el resultado de la transaccion
+                                    alert('Guardó');
+                                } else {
+                                    alert('No guardó');
+                                }
                             } else {
-                                alert('No guardó');
+                                alert(res.data.errorMsg);
                             }
-                        } else {
-                            alert(res.data.errorMsg);
-                        }
-                    });
+                        });
+                    } else {
+                        alert('Todos los campos son necesarios');
+                    }
+
                 };
                 ac.actualizar = function () {
-                    var parametros = {
-                        proceso: 'actualizar',
-                        idCitas: ac.idCitas,
-                        idMedicamento: ac.idMedicamento
-                    };
-                    $http({
-                        method: 'POST',
-                        url: 'peticionesAsignacion.jsp',
-                        params: parametros
-                    }).then(function (res) {
-                        if (res.data.ok === true) {//verificar si el proceso existe
-                            if (res.data.actualizar === true) {//verifica el resultado de la transaccion
-                                alert('Actualizó');
+                    if (validar('todosLosCampos')) {
+                        var parametros = {
+                            proceso: 'actualizar',
+                            idCitas: ac.idCitas,
+                            idMedicamento: ac.idMedicamento
+                        };
+                        $http({
+                            method: 'POST',
+                            url: 'peticionesAsignacion.jsp',
+                            params: parametros
+                        }).then(function (res) {
+                            if (res.data.ok === true) {//verificar si el proceso existe
+                                if (res.data.actualizar === true) {//verifica el resultado de la transaccion
+                                    alert('Actualizó');
+                                } else {
+                                    alert('No Actualizó');
+                                }
                             } else {
-                                alert('No Actualizó');
+                                alert(res.data.errorMsg);
                             }
-                        } else {
-                            alert(res.data.errorMsg);
-                        }
-                    });
+                        });
+                    } else {
+                        alert('Todos los campos son necesarios');
+                    }
                 };
                 ac.eliminar = function () {
-                    var parametros = {
-                        proceso: 'eliminar',
-                        idCitas: ac.idCitas
-                    };
-                    $http({
-                        method: 'POST',
-                        url: 'peticionesAsignacion.jsp',
-                        params: parametros
-                    }).then(function (res) {
-                        if (res.data.ok === true) {
-                            if (res.data.eliminar === true) {
-                                alert('Eliminado');
+                    if (validar('soloId')) {
+                        var parametros = {
+                            proceso: 'eliminar',
+                            idCitas: ac.idCitas
+                        };
+                        $http({
+                            method: 'POST',
+                            url: 'peticionesAsignacion.jsp',
+                            params: parametros
+                        }).then(function (res) {
+                            if (res.data.ok === true) {
+                                if (res.data.eliminar === true) {
+                                    alert('Eliminado');
+                                } else {
+                                    alert('No Eliminado');
+                                }
                             } else {
-                                alert('No Eliminado');
+                                alert(res.data.errorMsg);
                             }
-                        } else {
-                            alert(res.data.errorMsg);
-                        }
-                    });
+                        });
+                    }else{
+                        alert('El campo ID es necesario');
+                    }
                 };
                 ac.editar = function (id) {
                     var parametros = {

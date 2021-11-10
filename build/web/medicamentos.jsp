@@ -90,6 +90,32 @@
             app.controller('medicamentoController', ['$http', controladorMedicamento]);
             function controladorMedicamento($http) {
                 var mc = this;
+                validar = function (tipoDeValidacion) {
+                    var idMedicamento = mc.idMedicamento ? true : false;
+                    var nombreMedicamento = mc.nombreMedicamento ? true : false;
+                    if (tipoDeValidacion === 'todosLosCampos') {
+                        if (idMedicamento && nombreMedicamento) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                    if (tipoDeValidacion === 'soloNombre') {
+                        if (nombreMedicamento) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                    if (tipoDeValidacion === 'soloId') {
+                        if (idMedicamento) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+
+                };
                 mc.listar = function () {
                     var parametros = {
                         proceso: 'listar'
@@ -103,81 +129,97 @@
                     });
                 };
                 mc.guardar = function () {
-                    var parametros = {
-                        proceso: 'guardar',
-                        nombreMedicamento: mc.nombreMedicamento
-                    };
-                    $http({
-                        method: 'POST',
-                        url: 'peticionesMedicamento.jsp',
-                        params: parametros
-                    }).then(function (res) {
-                        if (res.data.ok === true) {//verificar si el proceso existe
-                            if (res.data.guardar === true) {//verifica el resultado de la transaccion
-                                alert('Guardó');
+                    if (validar('soloNombre')) {
+                        var parametros = {
+                            proceso: 'guardar',
+                            nombreMedicamento: mc.nombreMedicamento
+                        };
+                        $http({
+                            method: 'POST',
+                            url: 'peticionesMedicamento.jsp',
+                            params: parametros
+                        }).then(function (res) {
+                            if (res.data.ok === true) {//verificar si el proceso existe
+                                if (res.data.guardar === true) {//verifica el resultado de la transaccion
+                                    alert('Guardó');
+                                } else {
+                                    alert('No guardó');
+                                }
                             } else {
-                                alert('No guardó');
+                                alert(res.data.errorMsg);
                             }
-                        } else {
-                            alert(res.data.errorMsg);
-                        }
-                    });
+                        });
+                    } else {
+                        alert('El campo nombre el obligatorio');
+
+                    }
+
                 };
                 mc.actualizar = function () {
-                    var parametros = {
-                        proceso: 'actualizar',
-                        idMedicamento: mc.idMedicamento,
-                        nombreMedicamento: mc.nombreMedicamento
-                    };
-                    $http({
-                        method: 'POST',
-                        url: 'peticionesMedicamento.jsp',
-                        params: parametros
-                    }).then(function (res) {
-                        if (res.data.ok === true) {//verificar si el proceso existe
-                            if (res.data.actualizar === true) {//verifica el resultado de la transaccion
-                                alert('Actualizó');
+                    if (validar('todosLosCampos')) {
+                        var parametros = {
+                            proceso: 'actualizar',
+                            idMedicamento: mc.idMedicamento,
+                            nombreMedicamento: mc.nombreMedicamento
+                        };
+                        $http({
+                            method: 'POST',
+                            url: 'peticionesMedicamento.jsp',
+                            params: parametros
+                        }).then(function (res) {
+                            if (res.data.ok === true) {//verificar si el proceso existe
+                                if (res.data.actualizar === true) {//verifica el resultado de la transaccion
+                                    alert('Actualizó');
+                                } else {
+                                    alert('No Actualizó');
+                                }
                             } else {
-                                alert('No Actualizó');
+                                alert(res.data.errorMsg);
                             }
-                        } else {
-                            alert(res.data.errorMsg);
-                        }
-                    });
+                        });
+                    } else {
+                        alert('Todos Los campos son obligatorios');
+                    }
+
                 };
                 mc.eliminar = function () {
+                    if (validar('soloId')) {
+                        var parametros = {
+                            proceso: 'eliminar',
+                            idMedicamento: mc.idMedicamento
+                        };
+                        $http({
+                            method: 'POST',
+                            url: 'peticionesMedicamento.jsp',
+                            params: parametros
+                        }).then(function (res) {
+                            if (res.data.ok === true) {
+                                if (res.data.eliminar === true) {
+                                    alert('Eliminado');
+                                } else {
+                                    alert('No Eliminado');
+                                }
+                            } else {
+                                alert(res.data.errorMsg);
+                            }
+                        });
+                    } else {
+                        alert('El campo ID es obligatorio');
+                    }
+
+                };
+                mc.editar = function (id) {
                     var parametros = {
-                        proceso: 'eliminar',
-                        idMedicamento: mc.idMedicamento
+                        proceso: 'consultaIndividual',
+                        idMedicamento: id
                     };
                     $http({
                         method: 'POST',
                         url: 'peticionesMedicamento.jsp',
                         params: parametros
                     }).then(function (res) {
-                        if (res.data.ok === true) {
-                            if (res.data.eliminar === true) {
-                                alert('Eliminado');
-                            } else {
-                                alert('No Eliminado');
-                            }
-                        } else {
-                            alert(res.data.errorMsg);
-                        }
-                    });
-                };
-                mc.editar=function(id){
-                    var parametros={
-                        proceso:'consultaIndividual',
-                        idMedicamento:id
-                    };
-                    $http({
-                        method:'POST',
-                        url:'peticionesMedicamento.jsp',
-                        params:parametros
-                    }).then(function(res){
-                        mc.idMedicamento=res.data.Medicamento.idMedicamento;
-                        mc.nombreMedicamento=res.data.Medicamento.nombreMedicamento;
+                        mc.idMedicamento = res.data.Medicamento.idMedicamento;
+                        mc.nombreMedicamento = res.data.Medicamento.nombreMedicamento;
                     });
                 };
             }
