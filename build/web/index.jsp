@@ -16,6 +16,6 @@
     <body>
         <jsp:include page="menu.jsp"/>
         <h1> TIC-SALUD---- Bienvenidos </h1>
-
+        <img src="welcome1.png"  width="500" height="250"/>
     </body>
 </html>

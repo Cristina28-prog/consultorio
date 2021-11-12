@@ -20,12 +20,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="asignacion.jsp">Asignaciones</a>
-                </li>
+                </li>              
             </ul>
-            <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
         </div>
+        <img src="logo.png"  width="270" height="100"/>
     </div>
 </nav>

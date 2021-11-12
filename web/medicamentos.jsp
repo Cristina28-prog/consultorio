@@ -13,7 +13,8 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-        <title>JSP Page</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <title>Medicamentos</title>
 
     </head>
     <body >
@@ -141,16 +142,39 @@
                         }).then(function (res) {
                             if (res.data.ok === true) {//verificar si el proceso existe
                                 if (res.data.guardar === true) {//verifica el resultado de la transaccion
-                                    alert('Guardó');
+                                    //alert('Guardó');
+                                    swal({
+                                        title: "Hecho",
+                                        text: "Guardado Exitosamente!",
+                                        icon: "success",
+                                        button: "Volver"
+                                    });
                                 } else {
-                                    alert('No guardó');
+                                    // alert('No guardó');
+                                    swal({
+                                        title: "Error",
+                                        text: "No guardado!",
+                                        icon: "error",
+                                        button: "Volver"
+                                    });
                                 }
                             } else {
-                                alert(res.data.errorMsg);
+                                swal({
+                                    title: "Error",
+                                    text: res.data.errorMsg,
+                                    icon: "error",
+                                    button: "Volver"
+                                });
                             }
                         });
                     } else {
-                        alert('El campo nombre el obligatorio');
+                        //alert('El campo nombre el obligatorio');
+                        swal({
+                            title: "No Ejecutado",
+                            text: "El campo nombre es obligatorio",
+                            icon: "warning",
+                            button: "Cerrar"
+                        });
 
                     }
 
@@ -169,16 +193,33 @@
                         }).then(function (res) {
                             if (res.data.ok === true) {//verificar si el proceso existe
                                 if (res.data.actualizar === true) {//verifica el resultado de la transaccion
-                                    alert('Actualizó');
+                                    //alert('Actualizó');
+                                    swal({
+                                        title: "Hecho",
+                                        text: "Actualizado Exitosamente!",
+                                        icon: "success",
+                                        button: "Volver"
+                                    });
                                 } else {
                                     alert('No Actualizó');
                                 }
                             } else {
-                                alert(res.data.errorMsg);
+                                swal({
+                                    title: "Error",
+                                    text: res.data.errorMsg,
+                                    icon: "error",
+                                    button: "Volver"
+                                });
                             }
                         });
                     } else {
-                        alert('Todos Los campos son obligatorios');
+                        //alert('Todos Los campos son obligatorios');
+                        swal({
+                            title: "No Ejecutado",
+                            text: "Todos los campos son obligatorios",
+                            icon: "warning",
+                            button: "Cerrar"
+                        });
                     }
 
                 };
@@ -195,18 +236,34 @@
                         }).then(function (res) {
                             if (res.data.ok === true) {
                                 if (res.data.eliminar === true) {
-                                    alert('Eliminado');
+                                    //alert('Eliminado');
+                                    swal({
+                                        title: "Hecho",
+                                        text: "Eliminado Exitosamente!",
+                                        icon: "success",
+                                        button: "Volver"
+                                    });
                                 } else {
                                     alert('No Eliminado');
                                 }
                             } else {
-                                alert(res.data.errorMsg);
+                                swal({
+                                    title: "Error",
+                                    text: res.data.errorMsg,
+                                    icon: "error",
+                                    button: "Volver"
+                                });
                             }
                         });
                     } else {
-                        alert('El campo ID es obligatorio');
+                        //alert('El campo ID es obligatorio');
+                        swal({
+                            title: "No Ejecutado",
+                            text: "El campo ID es obligatorio",
+                            icon: "warning",
+                            button: "Cerrar"
+                        });
                     }
-
                 };
                 mc.editar = function (id) {
                     var parametros = {

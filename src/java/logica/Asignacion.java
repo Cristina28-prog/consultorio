@@ -22,6 +22,7 @@ public class Asignacion {
     private Citas cita;
     private Usuario usuario;
     private Medicamento medicamento;
+    private Medicos medico;
 
     public Asignacion() {
     }
@@ -75,6 +76,15 @@ public class Asignacion {
         this.medicamento = medicamento;
     }
 
+    public Medicos getMedico() {
+        return medico;
+    }
+
+    public void setMedico(Medicos medico) {
+        this.medico = medico;
+    }
+    
+
     @Override
     public String toString() {
         return "Asignacion{" + "idCitas=" + idCitas + ", idMedicamento=" + idMedicamento + '}';
@@ -117,6 +127,14 @@ public class Asignacion {
             Asignacion a;
             if (rs.next()) {
                 this.idMedicamento = rs.getInt("idMedicamento");
+                Medicamento m = new Medicamento(this.getIdMedicamento()).consultarMedicamentoInd();
+                this.setMedicamento(m);
+                Citas c = new Citas(this.getIdCitas()).consultarCitasInd();
+                this.setCita(c);
+                Usuario u = new Usuario(c.getIdUsuario()).consultarUsuarioInd();
+                this.setUsuario(u);
+                Medicos med = new Medicos(c.getIdMedico()).consultarMedicoInd();
+                this.setMedico(med);
             } else {
                 return null;
             }
