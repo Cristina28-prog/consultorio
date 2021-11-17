@@ -24,6 +24,7 @@ public class Usuario {
     private String contrasenia;
     private String tipoPerfil;
     private int edad;
+    private String usuario;
 
     public Usuario() {
     }
@@ -32,7 +33,7 @@ public class Usuario {
         this.idUsuario = idUsuario;
     }
 
-    public Usuario(int idUsuario, String nombreUsuario, String tipoDocumento, String documentoUsuario, String contrasenia, String tipoPerfil, int edad) {
+    public Usuario(int idUsuario, String nombreUsuario, String tipoDocumento, String documentoUsuario, String contrasenia, String tipoPerfil, int edad, String usuario) {
         this.idUsuario = idUsuario;
         this.nombreUsuario = nombreUsuario;
         this.tipoDocumento = tipoDocumento;
@@ -40,6 +41,7 @@ public class Usuario {
         this.contrasenia = contrasenia;
         this.tipoPerfil = tipoPerfil;
         this.edad = edad;
+        this.usuario = usuario;
     }
 
     public int getIdUsuario() {
@@ -98,6 +100,14 @@ public class Usuario {
         this.edad = edad;
     }
 
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
     @Override
     public String toString() {
         return "Usuario{" + "idUsuario=" + idUsuario + ", nombreUsuario=" + nombreUsuario + ", tipoDocumento=" + tipoDocumento + ", documentoUsuario=" + documentoUsuario + ", contrasenia=" + contrasenia + ", tipoPerfil=" + tipoPerfil + ", edad=" + edad + '}';
@@ -106,8 +116,7 @@ public class Usuario {
     public List<Usuario> consultarUsuario() {
         List<Usuario> lista = new ArrayList<>();
         ConexionBD conexion = new ConexionBD();
-        String sql = "SELECT idUsuario, nombreUsuario, tipoDocumento, documentoUsuario, contrasenia, tipoPerfil, edad\n"
-                + "FROM c4b7grupo1.usuario;";
+        String sql = "SELECT * FROM usuario;";
         ResultSet rs = conexion.consultarBD(sql);
         try {
             Usuario u;
@@ -120,6 +129,142 @@ public class Usuario {
                 u.setContrasenia(rs.getString("contrasenia"));
                 u.setTipoPerfil(rs.getString("tipoPerfil"));
                 u.setEdad(rs.getInt("edad"));
+                u.setUsuario(rs.getString("usuario"));
+                lista.add(u);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error" + ex.getMessage());
+        } finally {
+            conexion.cerrarConexion();
+        }
+        return lista;
+    }
+
+    public List<Usuario> consultarUsuarioPorNombre(String nombre) {
+        List<Usuario> lista = new ArrayList<>();
+        ConexionBD conexion = new ConexionBD();
+        String sql = "SELECT * FROM usuario WHERE nombreUsuario LIKE '%" + nombre + "%'";
+        ResultSet rs = conexion.consultarBD(sql);
+        try {
+            Usuario u;
+            while (rs.next()) {
+                u = new Usuario();
+                u.setIdUsuario(rs.getInt("idUsuario"));
+                u.setNombreUsuario(rs.getString("nombreUsuario"));
+                u.setTipoDocumento(rs.getString("tipoDocumento"));
+                u.setDocumentoUsuario(rs.getString("documentoUsuario"));
+                u.setContrasenia(rs.getString("contrasenia"));
+                u.setTipoPerfil(rs.getString("tipoPerfil"));
+                u.setEdad(rs.getInt("edad"));
+                u.setUsuario(rs.getString("usuario"));
+                lista.add(u);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error" + ex.getMessage());
+        } finally {
+            conexion.cerrarConexion();
+        }
+        return lista;
+    }
+
+    public List<Usuario> consultarUsuarioPorDocumento(String documento) {
+        List<Usuario> lista = new ArrayList<>();
+        ConexionBD conexion = new ConexionBD();
+        String sql = "SELECT * FROM usuario WHERE documentoUsuario LIKE '%" + documento + "%'";
+        ResultSet rs = conexion.consultarBD(sql);
+        try {
+            Usuario u;
+            while (rs.next()) {
+                u = new Usuario();
+                u.setIdUsuario(rs.getInt("idUsuario"));
+                u.setNombreUsuario(rs.getString("nombreUsuario"));
+                u.setTipoDocumento(rs.getString("tipoDocumento"));
+                u.setDocumentoUsuario(rs.getString("documentoUsuario"));
+                u.setContrasenia(rs.getString("contrasenia"));
+                u.setTipoPerfil(rs.getString("tipoPerfil"));
+                u.setEdad(rs.getInt("edad"));
+                u.setUsuario(rs.getString("usuario"));
+                lista.add(u);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error" + ex.getMessage());
+        } finally {
+            conexion.cerrarConexion();
+        }
+        return lista;
+    }
+
+    public List<Usuario> consultarUsuarioPorPerfil(String perfil) {
+        List<Usuario> lista = new ArrayList<>();
+        ConexionBD conexion = new ConexionBD();
+        String sql = "SELECT * FROM usuario WHERE tipoPerfil LIKE '%" + perfil + "%'";
+        ResultSet rs = conexion.consultarBD(sql);
+        try {
+            Usuario u;
+            while (rs.next()) {
+                u = new Usuario();
+                u.setIdUsuario(rs.getInt("idUsuario"));
+                u.setNombreUsuario(rs.getString("nombreUsuario"));
+                u.setTipoDocumento(rs.getString("tipoDocumento"));
+                u.setDocumentoUsuario(rs.getString("documentoUsuario"));
+                u.setContrasenia(rs.getString("contrasenia"));
+                u.setTipoPerfil(rs.getString("tipoPerfil"));
+                u.setEdad(rs.getInt("edad"));
+                u.setUsuario(rs.getString("usuario"));
+                lista.add(u);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error" + ex.getMessage());
+        } finally {
+            conexion.cerrarConexion();
+        }
+        return lista;
+    }
+
+    public List<Usuario> consultarUsuarioPorUsuario(String user) {
+        List<Usuario> lista = new ArrayList<>();
+        ConexionBD conexion = new ConexionBD();
+        String sql = "SELECT * FROM usuario WHERE usuario=  '" + user + "'";
+        ResultSet rs = conexion.consultarBD(sql);
+        try {
+            Usuario u;
+            while (rs.next()) {
+                u = new Usuario();
+                u.setIdUsuario(rs.getInt("idUsuario"));
+                u.setNombreUsuario(rs.getString("nombreUsuario"));
+                u.setTipoDocumento(rs.getString("tipoDocumento"));
+                u.setDocumentoUsuario(rs.getString("documentoUsuario"));
+                u.setContrasenia(rs.getString("contrasenia"));
+                u.setTipoPerfil(rs.getString("tipoPerfil"));
+                u.setEdad(rs.getInt("edad"));
+                u.setUsuario(rs.getString("usuario"));
+                lista.add(u);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error" + ex.getMessage());
+        } finally {
+            conexion.cerrarConexion();
+        }
+        return lista;
+    }
+
+    public List<Usuario> consultarUsuarioPorEdad(int edad) {
+        List<Usuario> lista = new ArrayList<>();
+        ConexionBD conexion = new ConexionBD();
+        String sql = "SELECT * FROM usuario WHERE edad= " + edad + "";
+        ResultSet rs = conexion.consultarBD(sql);
+        try {
+            Usuario u;
+            while (rs.next()) {
+                u = new Usuario();
+                u.setIdUsuario(rs.getInt("idUsuario"));
+                u.setNombreUsuario(rs.getString("nombreUsuario"));
+                u.setTipoDocumento(rs.getString("tipoDocumento"));
+                u.setDocumentoUsuario(rs.getString("documentoUsuario"));
+                u.setContrasenia(rs.getString("contrasenia"));
+                u.setTipoPerfil(rs.getString("tipoPerfil"));
+                u.setEdad(rs.getInt("edad"));
+                u.setUsuario(rs.getString("usuario"));
                 lista.add(u);
             }
         } catch (SQLException ex) {
@@ -133,7 +278,7 @@ public class Usuario {
     public Usuario consultarUsuarioInd() {
         List<Usuario> lista = new ArrayList<>();
         ConexionBD conexion = new ConexionBD();
-        String sql = "SELECT * FROM c4b7grupo1.usuario WHERE idusuario= " + this.idUsuario + ";";
+        String sql = "SELECT * FROM usuario WHERE idusuario= " + this.idUsuario + ";";
         ResultSet rs = conexion.consultarBD(sql);
         try {
             Usuario u;
@@ -144,6 +289,7 @@ public class Usuario {
                 this.tipoPerfil = rs.getString("tipoPerfil");
                 this.contrasenia = rs.getString("contrasenia");
                 this.edad = rs.getInt("edad");
+                this.usuario = rs.getString("usuario");
             } else {
                 return null;
             }
@@ -157,9 +303,9 @@ public class Usuario {
 
     public boolean guardarUsuario() {
         ConexionBD conexion = new ConexionBD();
-        String sql = "INSERT INTO c4b7grupo1.usuario\n"
-                + "(nombreUsuario, tipoDocumento, documentoUsuario, contrasenia, tipoPerfil, edad)\n"
-                + "VALUES('" + this.nombreUsuario + "', '" + this.tipoDocumento + "', '" + this.documentoUsuario + "', '" + this.contrasenia + "', '" + tipoPerfil + "', " + this.edad + ");";
+        String sql = "INSERT INTO usuario\n"
+                + "(nombreUsuario, tipoDocumento, documentoUsuario, contrasenia, tipoPerfil, edad, usuario)\n"
+                + "VALUES('" + this.nombreUsuario + "', '" + this.tipoDocumento + "', '" + this.documentoUsuario + "', '" + this.contrasenia + "', '" + this.tipoPerfil + "', " + this.edad + ", '" + this.usuario + "');";
         if (conexion.setAutoCommitBD(false)) {
             if (conexion.insertarBD(sql)) {
                 conexion.commitBD();
@@ -179,13 +325,14 @@ public class Usuario {
 
     public boolean actualizarUsuario() {
         ConexionBD conexion = new ConexionBD();
-        String sql = "UPDATE c4b7grupo1.usuario \n"
+        String sql = "UPDATE usuario \n"
                 + "SET nombreUsuario='" + this.nombreUsuario + "',"
                 + "tipoDocumento='" + this.tipoDocumento + "',"
                 + "documentoUsuario='" + this.documentoUsuario + "',"
                 + "contrasenia='" + this.contrasenia + "',"
                 + "tipoPerfil='" + this.tipoPerfil + "',"
-                + "edad=" + this.edad + "\n"
+                + "edad=" + this.edad + ","
+                + "tipoPerfil='" + this.usuario + "'\n"
                 + "WHERE idUsuario=" + this.idUsuario + ";";
         if (conexion.setAutoCommitBD(false)) {
             if (conexion.actualizarBD(sql)) {
@@ -206,7 +353,7 @@ public class Usuario {
 
     public boolean eliminarUsuario() {
         ConexionBD conexion = new ConexionBD();
-        String sql = "DELETE FROM c4b7grupo1.usuario\n"
+        String sql = "DELETE FROM usuario\n"
                 + "WHERE idUsuario=" + this.idUsuario + ";";
         if (conexion.setAutoCommitBD(false)) {
             if (conexion.actualizarBD(sql)) {

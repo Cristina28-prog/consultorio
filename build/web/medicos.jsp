@@ -9,10 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <jsp:include page="heads.jsp"/>
         <title>Medicos</title>
     </head>
     <body>
@@ -44,9 +41,13 @@
                                 <option>Neurologia</option>
                             </select>
                         </div>
-                        <div class="col-6"> 
+                        <div class="col-3"> 
                             <label>contraseña</label>
                             <input type="text" class="form-control" placeholder="Contraseña" ng-model="mc.contrasenia">
+                        </div>
+                        <div class="col-3"> 
+                            <label>usuario</label>
+                            <input type="text" class="form-control" placeholder="Usuario" ng-model="mc.usuario">
                         </div>
                     </div>
                     <br>
@@ -87,6 +88,10 @@
                             <label>Contraseña</label>
                             <input type="text" class="form-control" placeholder="Contraseña" disabled="" value="{{mc.contrasenia}}">
                         </div>
+                        <div class="col-3"> 
+                            <label>usuario</label>
+                            <input type="text" class="form-control" placeholder="Usuario" disabled="" value="{{mc.usuario}}">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -99,6 +104,7 @@
                             <th scope="col">nombre de Medico</th>
                             <th scope="col">Especialidad</th>
                             <th scope="col">contraseña</th>>
+                            <th scope="col">Usuario</th>>
                             <th scope="col">-</th>                           
                         </tr>
                     </thead>
@@ -108,6 +114,7 @@
                             <td>{{m.nombreMedico}}</td>
                             <td>{{m.especialidad}}</td>
                             <td>{{m.contrasenia}}</td>
+                            <td>{{m.usuario}}</td>
                             <td>
                                 <button type="button" class="btn btn-info" ng-click="mc.editar(m.idMedico)">Editar</button>
                             </td>
@@ -126,15 +133,16 @@
                     var nombreMedico = mc.nombreMedico;
                     var especialidad = mc.especialidad;
                     var contrasenia = mc.contrasenia;
+                    var usuario = mc.usuario;
                     if (tipoDeValidacion === 'todosLosCampos') {
-                        if (idMedico && nombreMedico && especialidad && contrasenia) {
+                        if (idMedico && nombreMedico && especialidad && contrasenia && usuario) {
                             return true;
                         } else {
                             return false;
                         }
                     }
                     if (tipoDeValidacion === 'datosSinId') {
-                        if (nombreMedico && especialidad && contrasenia) {
+                        if (nombreMedico && especialidad && contrasenia && usuario) {
                             return true;
                         } else {
                             return false;
@@ -166,7 +174,8 @@
                             proceso: 'guardar',
                             nombreMedico: mc.nombreMedico,
                             especialidad: mc.especialidad,
-                            contrasenia: mc.contrasenia
+                            contrasenia: mc.contrasenia,
+                            usuario: mc.usuario
                         };
                         $http({
                             method: 'POST',
@@ -210,7 +219,8 @@
                             idMedico: mc.idMedico,
                             nombreMedico: mc.nombreMedico,
                             especialidad: mc.especialidad,
-                            contrasenia: mc.contrasenia
+                            contrasenia: mc.contrasenia,
+                            usuario: mc.usuario
                         };
                         $http({
                             method: 'POST',
@@ -298,7 +308,7 @@
                         mc.nombreMedico = res.data.Medico.nombreMedico;
                         mc.especialidad = res.data.Medico.especialidad;
                         mc.contrasenia = res.data.Medico.contrasenia;
-
+                        mc.usuario = res.data.Medico.usuario;
                     });
                 };
             }

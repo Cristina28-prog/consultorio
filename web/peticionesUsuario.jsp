@@ -40,6 +40,7 @@
             String contrasenia = request.getParameter("contrasenia");
             String tipoPerfil = request.getParameter("tipoPerfil");
             int edad = Integer.parseInt(request.getParameter("edad"));
+            String usuario = request.getParameter("usuario");
             Usuario usu = new Usuario();
             usu.setNombreUsuario(nombreUsuario);
             usu.setTipoDocumento(tipoDocumento);
@@ -47,6 +48,7 @@
             usu.setContrasenia(contrasenia);
             usu.setTipoPerfil(tipoPerfil);
             usu.setEdad(edad);
+            usu.setUsuario(usuario);
             //Solicitud de parámetros enviados desde el frontned
             //, uso de request.getParameter("nombre parametro")
             // creación de objeto y llamado a método guardar           
@@ -103,6 +105,7 @@
             String contrasenia = request.getParameter("contrasenia");
             String tipoPerfil = request.getParameter("tipoPerfil");
             int edad = Integer.parseInt(request.getParameter("edad"));
+            String usuario = request.getParameter("usuario");
             Usuario usu = new Usuario();
             usu.setIdUsuario(idUsuario);
             usu.setNombreUsuario(nombreUsuario);
@@ -111,6 +114,7 @@
             usu.setContrasenia(contrasenia);
             usu.setTipoPerfil(tipoPerfil);
             usu.setEdad(edad);
+            usu.setUsuario(usuario);
             //creación de objeto y llamado al metodo actualizar
             if (usu.actualizarUsuario()) {
                 respuesta += "\"" + proceso + "\": true";

@@ -21,6 +21,7 @@ public class Medicos {
     private String nombreMedico;
     private String especialidad;
     private String contrasenia;
+    private String usuario;
 
     public Medicos() {
     }
@@ -29,11 +30,12 @@ public class Medicos {
         this.idMedico = idMedico;
     }
 
-    public Medicos(int idMedico, String nombreMedico, String especialidad, String contrasenia) {
+    public Medicos(int idMedico, String nombreMedico, String especialidad, String contrasenia, String usuario) {
         this.idMedico = idMedico;
         this.nombreMedico = nombreMedico;
         this.especialidad = especialidad;
         this.contrasenia = contrasenia;
+        this.usuario = usuario;
     }
 
     public int getIdMedico() {
@@ -68,6 +70,16 @@ public class Medicos {
         this.contrasenia = contrasenia;
     }
 
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+    
+    
+
     @Override
     public String toString() {
         return "Medicos{" + "idMedico=" + idMedico + ", nombreMedico=" + nombreMedico + ", especialidad=" + especialidad + ", contrasenia=" + contrasenia + '}';
@@ -76,8 +88,8 @@ public class Medicos {
     public List<Medicos> consultarMedicos() {
         List<Medicos> lista = new ArrayList<>();
         ConexionBD conexion = new ConexionBD();
-        String sql = "SELECT idMedico, nombreMedico, especialidad, contrasenia\n"
-                + "FROM c4b7grupo1.medicos;";
+        String sql = "SELECT idMedico, nombreMedico, especialidad, contrasenia, usuario\n"
+                + "FROM medicos;";
         ResultSet rs = conexion.consultarBD(sql);
         try {
             Medicos m;
@@ -87,6 +99,7 @@ public class Medicos {
                 m.setNombreMedico(rs.getString("nombreMedico"));
                 m.setEspecialidad(rs.getString("especialidad"));
                 m.setContrasenia(rs.getString("contrasenia"));
+                m.setUsuario(rs.getString("usuario"));
                 lista.add(m);
             }
         } catch (SQLException ex) {
@@ -100,7 +113,7 @@ public class Medicos {
     public Medicos consultarMedicoInd() {
         List<Medicos> lista = new ArrayList<>();
         ConexionBD conexion = new ConexionBD();
-        String sql = "SELECT * FROM c4b7grupo1.medicos WHERE idMedico= " + this.idMedico + ";";
+        String sql = "SELECT * FROM medicos WHERE idMedico= " + this.idMedico + ";";
         ResultSet rs = conexion.consultarBD(sql);
         try {
             Medicos m;
@@ -108,6 +121,7 @@ public class Medicos {
                 this.nombreMedico = rs.getString("nombreMedico");
                 this.especialidad = rs.getString("especialidad");
                 this.contrasenia = rs.getString("contrasenia");
+                this.usuario = rs.getString("usuario");
             } else {
                 return null;
             }
@@ -121,9 +135,9 @@ public class Medicos {
 
     public boolean guardarMedicos() {
         ConexionBD conexion = new ConexionBD();
-        String sql = "INSERT INTO c4b7grupo1.medicos\n"
-                + "(nombreMedico, especialidad, contrasenia)\n"
-                + "VALUES('" + this.nombreMedico + "', '" + this.especialidad + "', '" + this.contrasenia + "');";
+        String sql = "INSERT INTO medicos\n"
+                + "(nombreMedico, especialidad, contrasenia, usuario)\n"
+                + "VALUES('" + this.nombreMedico + "', '" + this.especialidad + "', '" + this.contrasenia + "', '" + this.usuario + "');";
         if (conexion.setAutoCommitBD(false)) {
             if (conexion.insertarBD(sql)) {
                 conexion.commitBD();
@@ -143,10 +157,11 @@ public class Medicos {
 
     public boolean actualizarMedicos() {
         ConexionBD conexion = new ConexionBD();
-        String sql = "UPDATE c4b7grupo1.medicos\n"
+        String sql = "UPDATE medicos\n"
                 + "SET nombreMedico= '" + this.nombreMedico + "' ,"
                 + "especialidad= '" + this.especialidad + "' ,"
-                + "contrasenia= '" + this.contrasenia + "' \n"
+                + "contrasenia= '" + this.contrasenia + "' ,"
+                + "usuario= '" + this.usuario + "'\n"
                 + "WHERE idMedico=" + this.idMedico + ";";
         if (conexion.setAutoCommitBD(false)) {
             if (conexion.insertarBD(sql)) {
@@ -167,7 +182,7 @@ public class Medicos {
 
     public boolean eliminarMedicos() {
         ConexionBD conexion = new ConexionBD();
-        String sql = "DELETE FROM c4b7grupo1.medicos\n"
+        String sql = "DELETE FROM medicos\n"
                 + "WHERE idMedico=" + this.idMedico + ";";
         if (conexion.setAutoCommitBD(false)) {
             if (conexion.actualizarBD(sql)) {

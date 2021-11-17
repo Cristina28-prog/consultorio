@@ -6,6 +6,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="usuarios.jsp">Usuarios</a>
                 </li>
@@ -20,9 +21,13 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="asignacion.jsp">Asignaciones</a>
-                </li>              
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="consultarUsuario.jsp">Buscar Usuario</a>
+                </li>  
             </ul>
         </div>
+
         <img src="logo.png"  width="270" height="100"/>
     </div>
 </nav>

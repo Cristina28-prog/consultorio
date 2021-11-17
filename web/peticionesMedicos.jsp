@@ -37,10 +37,12 @@
             String nombreMedico = request.getParameter("nombreMedico");
             String especialidad = request.getParameter("especialidad");
             String contrasenia = request.getParameter("contrasenia");
+            String usuario = request.getParameter("usuario");
             Medicos med = new Medicos();
             med.setNombreMedico(nombreMedico);
             med.setEspecialidad(especialidad);
             med.setContrasenia(contrasenia);
+            med.setUsuario(usuario);
 
             //Solicitud de parámetros enviados desde el frontned
             //, uso de request.getParameter("nombre parametro")
@@ -95,11 +97,13 @@
             String nombreMedico = request.getParameter("nombreMedico");
             String especialidad = request.getParameter("especialidad");
             String contrasenia = request.getParameter("contrasenia");
+            String usuario = request.getParameter("usuario");
             Medicos med = new Medicos();
             med.setIdMedico(idMedico);
             med.setNombreMedico(nombreMedico);
             med.setEspecialidad(especialidad);
             med.setContrasenia(contrasenia);
+            med.setUsuario(usuario);
             //creación de objeto y llamado al metodo actualizar
             if (med.actualizarMedicos()) {
                 respuesta += "\"" + proceso + "\": true";
