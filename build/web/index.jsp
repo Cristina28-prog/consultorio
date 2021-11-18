@@ -1,6 +1,6 @@
 <%-- 
     Document   : index
-    Created on : 2/11/2021, 08:24:42 AM
+    Created on : 17/11/2021, 07:41:58 PM
     Author     : Juan Rojas
 --%>
 
@@ -9,12 +9,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <jsp:include page="heads.jsp"/>
-        <title>JSP Page</title>
+        <title>Index</title>
     </head>
     <body>
-        <jsp:include page="menu.jsp"/>
-        <h1> TIC-SALUD---- Bienvenidos </h1>
-        <img src="welcome1.png"  width="500" height="250"/>
+        <jsp:include page="login.jsp"/>
     </body>
 </html>

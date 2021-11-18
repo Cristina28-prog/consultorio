@@ -22,7 +22,8 @@
         "eliminar",
         "actualizar",
         "listar",
-        "consultaIndividual"
+        "consultaIndividual", 
+        "consultaUsuario"
     });
 
     String proceso = "" + request.getParameter("proceso");
@@ -120,6 +121,17 @@
                 respuesta += "\"" + proceso + "\": true";
             } else {
                 respuesta += "\"" + proceso + "\": false";
+            }
+        }else if (proceso.equals("consultaUsuario")) {
+            try {
+                String usuario = request.getParameter("usuario");
+                Usuario usu = new Usuario().consultarUsuarioPorUsuario(usuario);
+                respuesta += "\"" + proceso + "\": true,\"Usuario\":" + new Gson().toJson(usu);;
+
+            } catch (Exception ex) {
+                respuesta += "\"" + proceso + "\": true,\"Usuario\": null";
+                Logger.getLogger(Usuario.class.getName()).log(Level.SEVERE, null, ex);
+
             }
         }
 

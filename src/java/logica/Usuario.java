@@ -221,31 +221,27 @@ public class Usuario {
         return lista;
     }
 
-    public List<Usuario> consultarUsuarioPorUsuario(String user) {
-        List<Usuario> lista = new ArrayList<>();
+    public Usuario consultarUsuarioPorUsuario(String user) {
         ConexionBD conexion = new ConexionBD();
         String sql = "SELECT * FROM usuario WHERE usuario=  '" + user + "'";
         ResultSet rs = conexion.consultarBD(sql);
         try {
-            Usuario u;
             while (rs.next()) {
-                u = new Usuario();
-                u.setIdUsuario(rs.getInt("idUsuario"));
-                u.setNombreUsuario(rs.getString("nombreUsuario"));
-                u.setTipoDocumento(rs.getString("tipoDocumento"));
-                u.setDocumentoUsuario(rs.getString("documentoUsuario"));
-                u.setContrasenia(rs.getString("contrasenia"));
-                u.setTipoPerfil(rs.getString("tipoPerfil"));
-                u.setEdad(rs.getInt("edad"));
-                u.setUsuario(rs.getString("usuario"));
-                lista.add(u);
+                this.idUsuario = rs.getInt("idUsuario");
+                this.nombreUsuario = rs.getString("nombreUsuario");
+                this.tipoDocumento = rs.getString("tipoDocumento");
+                this.documentoUsuario =rs.getString("documentoUsuario");
+                this.contrasenia = rs.getString("contrasenia");
+                this.tipoPerfil = rs.getString("tipoPerfil");
+                this.edad = rs.getInt("edad");
+                this.usuario = rs.getString("usuario");
             }
         } catch (SQLException ex) {
             System.out.println("Error" + ex.getMessage());
         } finally {
             conexion.cerrarConexion();
         }
-        return lista;
+        return this;
     }
 
     public List<Usuario> consultarUsuarioPorEdad(int edad) {
@@ -332,7 +328,7 @@ public class Usuario {
                 + "contrasenia='" + this.contrasenia + "',"
                 + "tipoPerfil='" + this.tipoPerfil + "',"
                 + "edad=" + this.edad + ","
-                + "tipoPerfil='" + this.usuario + "'\n"
+                + "usuario='" + this.usuario + "'\n"
                 + "WHERE idUsuario=" + this.idUsuario + ";";
         if (conexion.setAutoCommitBD(false)) {
             if (conexion.actualizarBD(sql)) {
