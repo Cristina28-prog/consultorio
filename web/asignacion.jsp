@@ -20,13 +20,17 @@
                 <div class="col-6">
                     Seccion 1
                     <div class="row">
-                        <div class="col-6"> 
+                        <div class="col-3"> 
                             <label>idCitas</label>
                             <input type="text" class="form-control" placeholder="id" ng-model="ac.idCitas">
                         </div>
-                        <div class="col-6"> 
+                        <div class="col-3"> 
                             <label>id Medicamento</label>
                             <input type="text" class="form-control" placeholder="Medicamento (id)" ng-model="ac.idMedicamento">
+                        </div>
+                        <div class="col-3"> 
+                            <label>Cantidad</label>
+                            <input type="text" class="form-control" placeholder="Cantidad" ng-model="ac.cantidad">
                         </div>
                     </div>
                     <br>
@@ -49,13 +53,17 @@
                 <div class="col-6">
                     Seccion 2
                     <div class="row">
-                        <div class="col-6"> 
+                        <div class="col-3"> 
                             <label>idCitas</label>
                             <input type="text" class="form-control" placeholder="id" disabled="" value="{{ac.idCitas}}">
                         </div>
-                        <div class="col-6"> 
+                        <div class="col-3"> 
                             <label>idMedicamento</label>
                             <input type="text" class="form-control" placeholder="Medicamento (id)" disabled="" value="{{ac.idMedicamento}}">
+                        </div>
+                        <div class="col-3"> 
+                            <label>Cantidad</label>
+                            <input type="text" class="form-control" placeholder="Cantidad " disabled="" value="{{ac.cantidad}}">
                         </div>
                     </div>
                 </div>
@@ -69,6 +77,7 @@
                             <th scope="col">Usuario</th>
                             <th scope="col">idMedicamento</th>
                             <th scope="col">Nombre Medicamento</th>>
+                            <th scope="col">Cantidad</th>>
                             <th scope="col">Funciones</th>                           
                         </tr>
                     </thead>
@@ -78,6 +87,7 @@
                             <td>{{a.usuario.nombreUsuario}}</td>
                             <td>{{a.idMedicamento}}</td>
                             <td>{{a.medicamento.nombreMedicamento}}</td>
+                            <td>{{a.cantidad}}</td>
                             <td>
                                 <div class="row">
                                     <div class="col-2 ">
@@ -153,8 +163,9 @@
                 validar = function (tipoDeValidacion) {
                     var idCitas = ac.idCitas;
                     var idMedicamento = ac.idMedicamento;
+                    var cantidad = ac.cantidad;
                     if (tipoDeValidacion === 'todosLosCampos') {
-                        if (idCitas && idMedicamento) {
+                        if (idCitas && idMedicamento && cantidad) {
                             return true;
                         } else {
                             return false;
@@ -186,7 +197,8 @@
                         var parametros = {
                             proceso: 'guardar',
                             idCitas: ac.idCitas,
-                            idMedicamento: ac.idMedicamento
+                            idMedicamento: ac.idMedicamento, 
+                            cantidad: ac.cantidad
                         };
                         $http({
                             method: 'POST',
@@ -213,7 +225,8 @@
                         var parametros = {
                             proceso: 'actualizar',
                             idCitas: ac.idCitas,
-                            idMedicamento: ac.idMedicamento
+                            idMedicamento: ac.idMedicamento,
+                            cantidad: ac.cantidad
                         };
                         $http({
                             method: 'POST',
@@ -271,6 +284,7 @@
                     }).then(function (res) {
                         ac.idCitas = res.data.Asignacion.idCitas;
                         ac.idMedicamento = res.data.Asignacion.idMedicamento;
+                        ac.cantidad = res.data.Asignacion.cantidad;
                     });
                 };
                 ac.verMas = function (id) {

@@ -23,6 +23,7 @@ public class Asignacion {
     private Usuario usuario;
     private Medicamento medicamento;
     private Medicos medico;
+    private int cantidad;
 
     public Asignacion() {
     }
@@ -31,9 +32,10 @@ public class Asignacion {
         this.idCitas = idCitas;
     }
 
-    public Asignacion(int idCitas, int idMedicamento) {
+    public Asignacion(int idCitas, int idMedicamento, int cantidad) {
         this.idCitas = idCitas;
         this.idMedicamento = idMedicamento;
+        this.cantidad = cantidad;
     }
 
     public int getIdCitas() {
@@ -83,6 +85,16 @@ public class Asignacion {
     public void setMedico(Medicos medico) {
         this.medico = medico;
     }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+    
+    
     
 
     @Override
@@ -93,8 +105,8 @@ public class Asignacion {
     public List<Asignacion> consultarAsignacion() {
         List<Asignacion> lista = new ArrayList<>();
         ConexionBD conexion = new ConexionBD();
-        String sql = "SELECT idCitas, idMedicamento\n"
-                + "FROM c4b7grupo1.asignacion;";
+        String sql = "SELECT idCitas, idMedicamento, cantidad\n"
+                + "FROM asignacion;";
         ResultSet rs = conexion.consultarBD(sql);
         try {
             Asignacion a;
@@ -102,6 +114,7 @@ public class Asignacion {
                 a = new Asignacion();
                 a.setIdCitas(rs.getInt("idCitas"));
                 a.setIdMedicamento(rs.getInt("idMedicamento"));
+                a.setCantidad(rs.getInt("cantidad"));
                 Medicamento m = new Medicamento(a.getIdMedicamento()).consultarMedicamentoInd();
                 a.setMedicamento(m);
                 Citas c = new Citas(a.getIdCitas()).consultarCitasInd();
@@ -121,12 +134,13 @@ public class Asignacion {
     public Asignacion consultarAsignacionInd() {
         List<Asignacion> lista = new ArrayList<>();
         ConexionBD conexion = new ConexionBD();
-        String sql = "SELECT * FROM c4b7grupo1.asignacion WHERE idCitas= " + this.idCitas + ";";
+        String sql = "SELECT * FROM asignacion WHERE idCitas= " + this.idCitas + ";";
         ResultSet rs = conexion.consultarBD(sql);
         try {
             Asignacion a;
             if (rs.next()) {
                 this.idMedicamento = rs.getInt("idMedicamento");
+                this.cantidad = rs.getInt("cantidad");
                 Medicamento m = new Medicamento(this.getIdMedicamento()).consultarMedicamentoInd();
                 this.setMedicamento(m);
                 Citas c = new Citas(this.getIdCitas()).consultarCitasInd();
@@ -148,9 +162,9 @@ public class Asignacion {
 
     public boolean guardarAsignacion() {
         ConexionBD conexion = new ConexionBD();
-        String sql = "INSERT INTO c4b7grupo1.asignacion\n"
-                + "(idCitas, idMedicamento)\n"
-                + "VALUES(" + this.idCitas + " , " + this.idMedicamento + ");";
+        String sql = "INSERT INTO asignacion\n"
+                + "(idCitas, idMedicamento, cantidad)\n"
+                + "VALUES(" + this.idCitas + " , " + this.idMedicamento + ", " + this.cantidad + ");";
         if (conexion.setAutoCommitBD(false)) {
             if (conexion.insertarBD(sql)) {
                 conexion.commitBD();
@@ -170,8 +184,8 @@ public class Asignacion {
 
     public boolean actualizarAsignacion() {
         ConexionBD conexion = new ConexionBD();
-        String sql = "UPDATE c4b7grupo1.asignacion\n"
-                + "SET idMedicamento= " + this.idMedicamento + " \n"
+        String sql = "UPDATE asignacion\n"
+                + "SET idMedicamento= " + this.idMedicamento + ", cantidad= " + this.cantidad + " \n"
                 + "WHERE idCitas=" + this.idCitas + ";";
         if (conexion.setAutoCommitBD(false)) {
             if (conexion.insertarBD(sql)) {
@@ -192,7 +206,7 @@ public class Asignacion {
 
     public boolean eliminarAsignacion() {
         ConexionBD conexion = new ConexionBD();
-        String sql = "DELETE FROM c4b7grupo1.asignacion\n"
+        String sql = "DELETE FROM asignacion\n"
                 + "WHERE idCitas=" + this.idCitas + ";";
         if (conexion.setAutoCommitBD(false)) {
             if (conexion.actualizarBD(sql)) {

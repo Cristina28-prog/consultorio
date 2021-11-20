@@ -36,9 +36,11 @@
         if (proceso.equals("guardar")) {
             int idCitas = Integer.parseInt(request.getParameter("idCitas"));
             int idMedicamento = Integer.parseInt(request.getParameter("idMedicamento"));
+            int cantidad = Integer.parseInt(request.getParameter("cantidad"));
             Asignacion asg = new Asignacion();
             asg.setIdMedicamento(idMedicamento);
             asg.setIdCitas(idCitas);
+            asg.setCantidad(cantidad);
             //Solicitud de parámetros enviados desde el frontned
             //, uso de request.getParameter("nombre parametro")
             // creación de objeto y llamado a método guardar           
@@ -87,9 +89,11 @@
         } else if (proceso.equals("actualizar")) {
             int idCitas = Integer.parseInt(request.getParameter("idCitas"));
             int idMedicamento = Integer.parseInt(request.getParameter("idMedicamento"));
+            int cantidad = Integer.parseInt(request.getParameter("cantidad"));
             Asignacion asg = new Asignacion();
             asg.setIdCitas(idCitas);
             asg.setIdMedicamento(idMedicamento);
+            asg.setCantidad(cantidad);
             //creación de objeto y llamado al metodo actualizar
             if (asg.actualizarAsignacion()) {
                 respuesta += "\"" + proceso + "\": true";
