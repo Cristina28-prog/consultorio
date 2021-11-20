@@ -25,6 +25,7 @@ DROP TABLE IF EXISTS `asignacion`;
 CREATE TABLE `asignacion` (
   `idCitas` int(11) NOT NULL,
   `idMedicamento` int(11) NOT NULL,
+  `cantidad` int(11) DEFAULT NULL,
   KEY `asignacion_FK_1` (`idCitas`),
   KEY `asignacion_FK_2` (`idMedicamento`),
   CONSTRAINT `asignacion_FK_1` FOREIGN KEY (`idCitas`) REFERENCES `citas` (`idCitas`),
@@ -38,7 +39,7 @@ CREATE TABLE `asignacion` (
 
 LOCK TABLES `asignacion` WRITE;
 /*!40000 ALTER TABLE `asignacion` DISABLE KEYS */;
-INSERT INTO `asignacion` VALUES (3,1),(6,2),(6,3),(5,3),(7,14),(8,10),(6,1),(9,10);
+INSERT INTO `asignacion` VALUES (3,1,5),(6,2,6),(6,3,10),(5,3,20),(7,14,6),(8,10,10),(6,1,15),(9,10,11),(10,6,2);
 /*!40000 ALTER TABLE `asignacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -59,7 +60,7 @@ CREATE TABLE `citas` (
   KEY `citas_FK_1` (`idMedico`),
   CONSTRAINT `citas_FK` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`),
   CONSTRAINT `citas_FK_1` FOREIGN KEY (`idMedico`) REFERENCES `medicos` (`idMedico`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,7 +69,7 @@ CREATE TABLE `citas` (
 
 LOCK TABLES `citas` WRITE;
 /*!40000 ALTER TABLE `citas` DISABLE KEYS */;
-INSERT INTO `citas` VALUES (3,5,'2021-10-31',2),(4,14,'2021-11-02',7),(5,14,'2021-05-05',5),(6,14,'2021-04-01',7),(7,18,'2021-11-20',7),(8,18,'2021-11-21',5),(9,6,'2021-11-25',2);
+INSERT INTO `citas` VALUES (3,5,'2021-10-31',2),(4,14,'2021-11-02',7),(5,14,'2021-05-05',5),(6,14,'2021-04-01',7),(7,18,'2021-11-20',7),(8,18,'2021-11-21',5),(9,6,'2021-11-25',2),(10,27,'2021-12-15',3);
 /*!40000 ALTER TABLE `citas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -83,7 +84,7 @@ CREATE TABLE `medicamento` (
   `idMedicamento` int(11) NOT NULL AUTO_INCREMENT,
   `nombreMedicamento` varchar(100) NOT NULL,
   PRIMARY KEY (`idMedicamento`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -149,7 +150,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'Johanna Rincon','CC','80544689','0000','ADMINISTRADOR',40,'Johanna1'),(2,'Cesar Rodriguez','CC','80563489','0000','SECRETARIA',35,'Cesar2'),(3,'Catalina arciniegas','CC','35896547','0000','SECRETARIA',50,'Catalina3'),(4,'Magdalena Pineda','CC','53058695','0000','PACIENTE',45,'Magdalena4'),(5,'Mario Martinez','CC','80545322','0000','PACIENTE',22,'Mario5'),(6,'Tatiana Santamaria','TI','145687952','0000','PACIENTE',14,'Tatiana6'),(14,'Serafina Luna','CC','55669988','0000','Serafina14',56,'Serafina14'),(18,'Tom York','CE','456987423','0000','PACIENTE',54,'Tom18'),(20,'Matias de Jesus Rojas','TI','148569874','0000','PACIENTE',13,'Matias20'),(22,'Valentina Mantilla','TI','1456235879','0000','Valentina22',2,'Valentina22'),(23,'Socorro Martinez','CC','37568945','0000','PACIENTE',81,'Socorro23'),(24,'Alonso Rodriguez Luna','CC','90256478','0000','PACIENTE',63,'Alonso24'),(25,'Saul Gamboa','CC','56487965','0000','PACIENTE',64,'Saul25'),(27,'Juliana Maria Romero','CC','56457896','0000','PACIENTE',21,'Juliana27'),(28,'Ana Fernanda Ramirez','CC','54896547','0000','PACIENTE',55,'Ana27');
+INSERT INTO `usuario` VALUES (1,'Johanna Rincon','CC','80544689','0000','ADMINISTRADOR',40,'Johanna1'),(2,'Cesar Rodriguez','CC','80563489','0000','SECRETARIA',35,'Cesar2'),(3,'Catalina arciniegas','CC','35896547','0000','SECRETARIA',50,'Catalina3'),(4,'Magdalena Pineda','CC','53058695','0000','PACIENTE',45,'Magdalena4'),(5,'Mario Martinez','CC','80545322','0000','PACIENTE',22,'Mario5'),(6,'Tatiana Santamaria','TI','145687952','0000','PACIENTE',14,'Tatiana6'),(14,'Serafina Luna','CC','55669988','0000','PACIENTE',56,'Serafina14'),(18,'Tom York','CE','456987423','0000','PACIENTE',54,'Tom18'),(20,'Matias de Jesus Rojas','TI','148569874','0000','PACIENTE',13,'Matias20'),(22,'Valentina Mantilla','TI','1456235879','0000','PACIENTE',2,'Valentina22'),(23,'Socorro Martinez','CC','37568945','0000','PACIENTE',81,'Socorro23'),(24,'Alonso Rodriguez Luna','CC','90256478','0000','PACIENTE',63,'Alonso24'),(25,'Saul Gamboa','CC','56487965','0000','PACIENTE',64,'Saul25'),(27,'Juliana Maria Romero','CC','56457896','0000','PACIENTE',21,'Juliana27'),(28,'Ana Fernanda Ramirez','CC','54896547','0000','PACIENTE',55,'Ana27');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -166,4 +167,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-16 22:26:21
+-- Dump completed on 2021-11-19 21:12:04
